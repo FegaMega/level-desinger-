@@ -1,5 +1,7 @@
 import pygame
-screenSize = [0, 0]
-screen = pygame.display.set_mode(screenSize)
-def newScreen():
-    screen = pygame.display.set_mode(screenSize)
+class main:
+    def __init__(self):
+        self.screenSize = [700, 700]
+        self.screen = pygame.display.set_mode(self.screenSize)
+    def newScreen(self):
+        self.screen = pygame.display.set_mode(self.screenSize)
