@@ -1,6 +1,10 @@
 {
-
-    "screenSize" : [
-        "700", "700"
+    "screenSize": [
+        1000,
+        700
+    ],
+    "userPrimaryDisplaySize": [
+        1920,
+        1080
     ]
 }
