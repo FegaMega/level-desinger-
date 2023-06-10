@@ -2,8 +2,9 @@ import pygame, json, sys, utils
 from utils import main
 from pygame.locals import *
 from JH import JsonHandler
+import settingsfolder
 
-
+SH = settingsfolder.settingshandeler()
 JH = JsonHandler()
 utils = utils.main()
 screen = utils.screen
@@ -19,13 +20,7 @@ def ArrayOfStrToInt(str):
 class desinger:
     def __init__(self):
         self.r = True
-        self.settingsfolder = "setting.json"
-        currentSettingsInfo = JH.JsonReader(self.settingsfolder)
-        currentSettingsInfo["userPrimaryDisplaySize"] = utils.user_primary_display_size
-        print(currentSettingsInfo["userPrimaryDisplaySize"])
-        JH.JsonWriter(self.settingsfolder, currentSettingsInfo)
-        utils.screenSize = currentSettingsInfo["screenSize"]
-        utils.newScreen()
+
     
 #    def input(self, event):
 #        
