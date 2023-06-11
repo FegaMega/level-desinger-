@@ -4,12 +4,13 @@ from pygame.locals import *
 from JH import JsonHandler
 import settingsfolder
 
-SH = settingsfolder.settingshandeler()
 JH = JsonHandler()
-utils = utils.main()
-screen = utils.screen
-screenSize = utils.screenSize
-user_primary_display_size = utils.user_primary_display_size
+U = utils.main()
+SH = settingsfolder.settingshandeler()
+
+screen = U.screen
+screenSize = U.screenSize
+user_primary_display_size = U.user_primary_display_size
 def ArrayOfStrToInt(str):
         newstr = []
         for i in str:
@@ -35,7 +36,7 @@ def main() -> int:
     # spel loopen
 
     while app.r == True:
-        screen.fill((146, 244, 255))
+        U.screen.fill((146, 244, 255))
         # Töm event kön
         for event in pygame.event.get():
             # Quit kod
