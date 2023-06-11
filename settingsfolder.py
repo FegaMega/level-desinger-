@@ -6,10 +6,10 @@ utils = main()
 class settingshandeler:
     def __init__(self):
         self.settingsfolder = "setting.json"
-        currentSettingsInfo = JH.JsonReader(self.settingsfolder)
-        currentSettingsInfo["userPrimaryDisplaySize"] = utils.user_primary_display_size
-        JH.JsonWriter(self.settingsfolder, currentSettingsInfo)
-        utils.screenSize = currentSettingsInfo["screenSize"]
+        self.currentSettingsInfo = JH.JsonReader(self.settingsfolder)
+        self.currentSettingsInfo["userPrimaryDisplaySize"] = utils.user_primary_display_size
+        JH.JsonWriter(self.settingsfolder, self.currentSettingsInfo)
+        utils.screenSize = self.currentSettingsInfo["screenSize"]
         utils.newScreen()
         
         
