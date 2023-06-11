@@ -3,8 +3,5 @@
         1920,
         1080
     ],
-    "userPrimaryDisplaySize": [
-        1920,
-        1080
-    ]
+    "userPrimaryDisplaySize": "[1920, 1080]"
 }

@@ -1,4 +1,4 @@
-import  JH, utils, pygame
+import  JH, utils, pygame, json
 from utils import main
 JH = JH.JsonHandler()
 utils = main()
