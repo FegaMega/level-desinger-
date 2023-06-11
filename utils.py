@@ -10,4 +10,3 @@ class main:
         self.screen = pygame.display.set_mode(self.screenSize)
     def newScreen(self):
         self.screen = pygame.display.set_mode(self.screenSize)
-        print(self.screenSize, pygame.display.get_window_size())
