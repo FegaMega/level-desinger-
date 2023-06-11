@@ -8,7 +8,6 @@ class settingshandeler:
         self.settingsfolder = "setting.json"
         currentSettingsInfo = JH.JsonReader(self.settingsfolder)
         currentSettingsInfo["userPrimaryDisplaySize"] = utils.user_primary_display_size
-        print(currentSettingsInfo["userPrimaryDisplaySize"])
         JH.JsonWriter(self.settingsfolder, currentSettingsInfo)
         utils.screenSize = currentSettingsInfo["screenSize"]
         utils.newScreen()
