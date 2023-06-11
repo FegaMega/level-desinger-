@@ -11,3 +11,5 @@ class settingshandeler:
         JH.JsonWriter(self.settingsfolder, self.currentSettingsInfo)
         utils.screenSize = self.currentSettingsInfo["screenSize"]
         utils.newScreen()
+        
+        
