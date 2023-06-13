@@ -6,10 +6,11 @@ import settingsfolder
 import inputControler
 
 
-USER = camera.camera()
-JH = JsonHandler()
-U = utils.main()
-SH = settingsfolder.settingshandeler()
+user = camera.camera()
+jh = JsonHandler()
+u = utils.main()
+sh = settingsfolder.settingshandeler()
+iC = inputControler
 
 
 
@@ -20,11 +21,13 @@ def ArrayOfStrToInt(str):
         return newstr
 
 
+
+
 class designer:
     def __init__(self):
         self.r = True
         self.scroll = [0, 0]
-        self.cubes = [objects.cube(U.screenSize[0]/2, U.screenSize[1]/2, 50, 50)]
+        self.cubes = [objects.cube(u.screenSize[0]/2, u.screenSize[1]/2, 50, 50)]
         self.mousePos = [0, 0]
     def drawCubes(self):
         for i in self.cubes:
@@ -32,9 +35,9 @@ class designer:
     def mousePosUpdate(self):
         return pygame.mouse.get_pos()
     def scrollFunc(self):
-        self.scroll[0] += (USER.x - self.scroll[0] - U.screenSize[0] / 2) / 10
-        self.scroll[1] += (USER.y - self.scroll[1] - U.screenSize[1] / 2) / 10
-        
+        self.scroll[0] += (user.x - self.scroll[0] - u.screenSize[0] / 2) / 10
+        self.scroll[1] += (user.y - self.scroll[1] - u.screenSize[1] / 2) / 10
+    
 
 def main() -> int:
     pygame.init()
@@ -44,17 +47,17 @@ def main() -> int:
 
     while app.r == True:
         app.mousePos = app.mousePosUpdate()
-        U.screen.fill((146, 244, 255))
+        u.screen.fill((146, 244, 255))
         # Töm event kön
         for event in pygame.event.get():
             # Quit kod
             if event.type == QUIT:
                 app.r = False
-            inputControler.inputHandler(USER, event)
+            iC.inputHandler(user, event)
         #Ritar object
         app.drawCubes()
-        USER.move()
-        USER.draw(app.scroll)
+        user.move()
+        user.draw(app.scroll)
         # uppdaterar skärmen
         pygame.display.update()
         #Updaterar mus positionen

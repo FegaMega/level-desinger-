@@ -7,30 +7,33 @@ YMAX = 3
 
 def eventW(KEYUPorKEYDOWN: str, player):
     if KEYUPorKEYDOWN == "KEYDOWN":
-        if player.yspeed != YMAX:
-            player.yspeed += YACCELERATION
+        if player.speed[1] != YMAX:
+            player.speed[1] += YACCELERATION
     if KEYUPorKEYDOWN == "KEYUP":
-        if player.yspeed > YDECELERATION:   
-            player.yspeed -= YDECELERATION
-        elif player.yspeed > 0:
-            player.yspeed = 0
+        if player.speed[1] > YDECELERATION:   
+            player.speed[1] -= YDECELERATION
+        elif player.speed[1] > 0:
+            player.speed[1] = 0
+    return [player.speed, "playerSpeed"]
 def eventS(KEYUPorKEYDOWN: str, player):
     if KEYUPorKEYDOWN == "KEYDOWN":
-        if player.yspeed != -YMAX:
-            player.yspeed -= YACCELERATION
+        if player.speed[1] != -YMAX:
+            player.speed[1] -= YACCELERATION
     if KEYUPorKEYDOWN == "KEYUP":
-        if player.yspeed < YDECELERATION:   
-            player.yspeed += YDECELERATION
-        elif player.yspeed < 0:
-            player.yspeed = 0
+        if player.speed[1] < YDECELERATION:   
+            player.speed[1] += YDECELERATION
+        elif player.speed[1] < 0:
+            player.speed[1] = 0
+    return [player.speed, "playerSpeed"]
 def inputHandler(player, event):
     if event.type == pygame.KEYDOWN:
         if event.key == K_w:
-            eventW("KEYDOWN", player)
+            info = eventW("KEYDOWN", player)
         if event.key == K_s:
-            eventS("KEYDOWN", player)
+            info = eventS("KEYDOWN", player)
     if event.type == pygame.KEYUP:
         if event.key == K_w:
-            eventW("KEYUP", player)
+            info = eventW("KEYUP", player)
         if event.key == K_s:
-            eventS("KEYUP", player)
+            info = eventS("KEYUP", player)
+    return info
