@@ -53,7 +53,10 @@ def main() -> int:
             # Quit kod
             if event.type == QUIT:
                 app.r = False
-            iC.inputHandler(user, event)
+            info = iC.inputHandler(user, event)
+            if info != None:
+                if info[1] == "playerSpeed":
+                    user.speed = info[0]
         #Ritar object
         app.drawCubes()
         user.move()
@@ -62,7 +65,7 @@ def main() -> int:
         pygame.display.update()
         #Updaterar mus positionen
         
-        
+        print(user.pos)
         # 60 Fps limmit
         pygame.time.Clock().tick(60)
     return 0
