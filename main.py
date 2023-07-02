@@ -6,11 +6,7 @@ import settingsfolder
 import inputControler
 
 
-user = camera.camera()
-jh = JsonHandler()
-u = utils.main()
-sh = settingsfolder.settingshandeler()
-iC = inputControler
+
 
 
 
@@ -25,9 +21,14 @@ def ArrayOfStrToInt(str):
 
 class designer:
     def __init__(self):
+        self.user = camera.camera()
+        self.jh = JsonHandler()
+        self.u = utils.main()
+        self.sh = settingsfolder.settingshandeler()
+        self.iC = inputControler
         self.r = True
         self.scroll = [0, 0]
-        self.cubes = [objects.cube(u.screenSize[0]/2, u.screenSize[1]/2, 50, 50)]
+        self.cubes = [objects.cube(self.u.screenSize[0]/2, self.u.screenSize[1]/2, 50, 50)]
         self.mousePos = [0, 0]
     def drawCubes(self):
         for i in self.cubes:
@@ -35,8 +36,8 @@ class designer:
     def mousePosUpdate(self):
         return pygame.mouse.get_pos()
     def scrollFunc(self):
-        self.scroll[0] += (user.x - self.scroll[0] - u.screenSize[0] / 2) / 10
-        self.scroll[1] += (user.y - self.scroll[1] - u.screenSize[1] / 2) / 10
+        self.scroll[0] += (self.user.pos[0] + self.user.size[0]/2 - self.scroll[0] - self.u.screenSize[0] / 2) / 10
+        self.scroll[1] += (self.user.pos[1] + self.user.size[0]/2 - self.scroll[1] - self.u.screenSize[1] / 2) / 10
     
 
 def main() -> int:
@@ -47,25 +48,23 @@ def main() -> int:
 
     while app.r == True:
         app.mousePos = app.mousePosUpdate()
-        u.screen.fill((146, 244, 255))
+        app.u.screen.fill((146, 244, 255))
         # Töm event kön
         for event in pygame.event.get():
             # Quit kod
             if event.type == QUIT:
                 app.r = False
-            info = iC.inputHandler(user, event)
-            if info != None:
-                if info[1] == "playerSpeed":
-                    user.speed = info[0]
+            app.iC.inputSaver(event, app.u.Key)
+        app.iC.inputHandler(app.user, app.u.Key)
+            
         #Ritar object
         app.drawCubes()
-        user.move()
-        user.draw(app.scroll)
+        app.user.move()
+        app.scrollFunc()
         # uppdaterar skärmen
         pygame.display.update()
         #Updaterar mus positionen
-        
-        print(user.pos)
+        print(app.user.speed)
         # 60 Fps limmit
         pygame.time.Clock().tick(60)
     return 0
