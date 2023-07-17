@@ -28,8 +28,9 @@ class designer:
         self.iC = inputControler
         self.r = True
         self.scroll = [0, 0]
-        self.cubes = [objects.cube(self.u.screenSize[0]/2, self.u.screenSize[1]/2, 50, 50)]
+        self.cubes = []
         self.mousePos = [0, 0]
+        self.n: int = 0
     def drawCubes(self):
         for i in self.cubes:
             i.draw(self.scroll)
@@ -48,24 +49,25 @@ def main() -> int:
 
     while app.r == True:
         app.mousePos = app.mousePosUpdate()
-        app.u.screen.fill((146, 244, 255))
-        # Töm event kön
+        app.u.screen.fill((146, 244, 255)) # Dubbelbuffer (ej visad bild)
+        # Töm (hantera) eventkön
         for event in pygame.event.get():
-            # Quit kod
+            # Avsluta kod
             if event.type == QUIT:
                 app.r = False
             app.iC.inputSaver(event, app.u.Key)
-        app.iC.inputHandler(app.user, app.u.Key)
+        app.iC.inputHandler(app)
             
-        #Ritar object
+        # Ritar object
         app.drawCubes()
         app.user.move()
         app.scrollFunc()
         # uppdaterar skärmen
+        
         pygame.display.update()
         #Updaterar mus positionen
-        print(app.user.speed)
-        # 60 Fps limmit
+        app.mousePos = app.mousePosUpdate
+        # 60 Fps limit
         pygame.time.Clock().tick(60)
     return 0
 

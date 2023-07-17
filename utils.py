@@ -35,12 +35,13 @@ class main:
             ["B", False, pygame.K_b],           #23
             ["N", False, pygame.K_n],           #24
             ["M", False, pygame.K_m],           #25
-            ["UP", False, pygame.K_UP],          #26
-            ["LEFT", False, pygame.K_LEFT],        #27
-            ["DOWN", False, pygame.K_DOWN],        #28
-            ["RIGHT", False, pygame.K_RIGHT],       #29
-            ["MOUSELEFT", False, 1],   #30
-            ["MOUSERIGHT", False, 2]   #31
+            ["UP", False, pygame.K_UP],         #26
+            ["LEFT", False, pygame.K_LEFT],     #27
+            ["DOWN", False, pygame.K_DOWN],     #28
+            ["RIGHT", False, pygame.K_RIGHT],   #29
+            ["MOUSELEFT", False, 1],            #30
+            ["MOUSERIGHT", False, 3],           #31
+            ["MOUSE", [0, 0], [0, 0]]           #32 [str, pos, oldpos]
         ]
     def newScreen(self):
         self.screen = pygame.display.set_mode(self.screenSize)
