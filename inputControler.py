@@ -10,12 +10,14 @@ XMAX = 3
 
 
 def eventDOWN(speed, Key):
-    if Key[11][1] == True or Key[28][1] == True:
+    S = Key[Key.index("S")+1]
+    DOWN = Key[Key.index("DOWN")+1]
+    if S[0] == True or DOWN[0] == True:
         if speed[1] < YMAX:
             speed[1] += YACCELERATION
         if speed[1] > YMAX:
             speed[1] = YMAX
-    if Key[11][1] == False and Key[28][1] == False: 
+    if S[0] == False and DOWN[0] == False: 
         if speed[1] > 0:
             if speed[1] < YDECELERATION:
                 speed[1] = 0
@@ -24,12 +26,14 @@ def eventDOWN(speed, Key):
     return [speed, "playerSpeed"]
 
 def eventUP(speed, Key):
-    if Key[1][1] == True or Key[26][1] == True:
+    W = Key[Key.index("W")+1]
+    UP = Key[Key.index("UP")+1]
+    if W[0] == True or UP[0] == True:
         if speed[1] > -YMAX:
             speed[1] -= YACCELERATION
         if speed[1] < -YMAX:
             speed[1] = -YMAX
-    if Key[1][1] == False and Key[26][1] == False:
+    if W[0] == False and UP[0] == False:
         if speed[1] < 0:
             if speed[1] > YDECELERATION:
                 speed[1] = 0
@@ -37,13 +41,15 @@ def eventUP(speed, Key):
                 speed[1] += YDECELERATION
     return [speed, "playerSpeed"]
 
-def eventLEFT(speed, Key):
-    if Key[10][1] == True or Key[27][1] == True:
+def eventLEFT(speed, Key:list):
+    A = Key[Key.index("A")+1]
+    LEFT = Key[Key.index("LEFT")+1]
+    if A[0] == True or LEFT[0] == True:
         if speed[0] > -XMAX:
             speed[0] -= XACCELERATION
         if speed[0] < -XMAX:
             speed[0] = -XMAX
-    if Key[10][1] == False and Key[27][1] == False:
+    if A[0] == False and LEFT[0] == False:
         if speed[0] < 0:
             if speed[0] > XDECELERATION:
                 speed[0] = 0
@@ -52,75 +58,86 @@ def eventLEFT(speed, Key):
     return [speed, "playerSpeed"]
 
 def eventRIGHT(speed, Key):
-    if Key[12][1] == True or Key[29][1] == True:
+    D = Key[Key.index("D")+1]
+    RIGHT = Key[Key.index("RIGHT")+1]
+    if D[0] == True or RIGHT[0] == True:
         if speed[0] < XMAX:
             speed[0] += XACCELERATION
         if speed[0] > XMAX:
             speed[0] = XMAX
-    if Key[12][1] == False and Key[29][1] == False:
+    if D[0] == False and RIGHT[0] == False:
         if speed[0] > 0:
             if speed[0] < XDECELERATION:
                 speed[0] = 0
             else:
                 speed[0] -= XDECELERATION
     return [speed, "playerSpeed"]
-def eventMOVEWITHMOUSE(pos, Key):
-    for i in Key:
-        if i[0] == "MOUSERIGHT" and i[1] == True:
-            for key in Key:
-                if key[0] == "MOUSE":
-                    key[1] = pygame.mouse.get_pos()
-                    pos[0] = (key[2][0] - key[1][0] + pos[0])
-                    pos[1] = (key[2][1] - key[1][1] + pos[1])
-                    key[2] = key[1]
-def eventSPAWNCUBE(Key, Cubes: list, mousePos, scroll, n):
+def eventMOVEWITHMOUSE(pos, Mouse):
+    MouseRight = Mouse[Mouse.index("MOUSERIGHT")+1]
+    Mouse = Mouse[Mouse.index("MOUSE")+1]
+    if MouseRight[0] == True:
+        Mouse[0] = pygame.mouse.get_pos()
+        pos[0] = (Mouse[1][0] - Mouse[0][0] + pos[0])
+        pos[1] = (Mouse[1][1] - Mouse[0][1] + pos[1])
+        Mouse[1] = Mouse[0]
+def eventSPAWNCUBE(Key, Mouse, Cubes: list, mousePos, scroll, n):
+    O = Key[Key.index("O")+1]
+    MouseLeft = Mouse[Mouse.index("MOUSELEFT")+1]
     n = 0
     for cube in Cubes:
         if cube.extra_info == ["holding"]:
             n += 1
-            cube.pos[0] = mousePos[0] + scroll[0] - (cube.size[0] /2)
-            cube.pos[1] = mousePos[1] + scroll[1] - (cube.size[1] /2)
-            for key in Key:
-                if key[0] == "MOUSELEFT" and key[1] == True:
-                    cube.extra_info = []
+            cube.pos[0] = round(mousePos[0] + scroll[0] - (cube.size[0] /2))
+            cube.pos[1] = round(mousePos[1] + scroll[1] - (cube.size[1] /2))
+            if MouseLeft[0] == True:
+                cube.extra_info = []
     if n <= 0:
-        for i in Key:
-            if i[0] == "O" and i[1] == True:
-                Cubes.append(objects.cube(mousePos[0] + scroll[0], mousePos[1] + scroll[1], 50, 50, extra_info=["holding"]))
+        if O[0] == True:
+            Cubes.append(objects.cube(mousePos[0] + scroll[0], mousePos[1] + scroll[1], 50, 50, extra_info=["holding"]))
+            
+    n = 0
     return Cubes
-    
+def eventSAVE(Key, Cubes, LH):
+    S = Key[Key.index("S")+1]
+    if S[0] == True:
+        LH.objectWriter(Cubes)
 
 
 
 
-def inputSaver(event, Key):
+def inputSaver(event, Key, Mouse):
     
     #Keyboard saver
     if event.type == pygame.KEYDOWN: 
-        for i in Key:
-            if i[2] != "MOUSELEFT" or i[2] != "MOUSERIGHT":
-                if event.key == i[2]:
-                    i[1] = True
+        for key in Key:
+            if key.__class__ == list:
+                if event.key == key[1]:
+                    key[0] = True
+                    
 
     if event.type == pygame.KEYUP:     
-        for i in Key:
-            if i[2] != "MOUSELEFT" or i[2] != "MOUSERIGHT":
-                if event.key == i[2]:
-                    i[1] = False
+        for key in Key:
+            if key.__class__ == list:
+                if event.key == key[1]:
+                    key[0] = False
 
     #mouse saver
+    MouseLeft = Mouse[Mouse.index("MOUSELEFT")+1]
+    MouseRight = Mouse[Mouse.index("MOUSERIGHT")+1]
+    MouseVar = Mouse[Mouse.index("MOUSE")+1]
     if event.type == pygame.MOUSEBUTTONDOWN:
         if event.button == 1:
-            Key[30][1] = True
-            Key[32][2] = pygame.mouse.get_pos()
+            MouseLeft[0] = True
+            MouseVar[1] = pygame.mouse.get_pos()
         if event.button == 3:
-            Key[31][1] = True
+            MouseRight[0] = True
+            MouseVar[1] = pygame.mouse.get_pos()
 
     if event.type == pygame.MOUSEBUTTONUP:
         if event.button == 1:
-            Key[30][1] = False
+            MouseLeft[0] = False
         if event.button == 3:
-            Key[31][1] = False
+            MouseRight[0] = False
  
 
 
@@ -129,5 +146,6 @@ def inputHandler(app):
     eventUP(app.user.speed, app.u.Key) 
     eventLEFT(app.user.speed, app.u.Key)
     eventRIGHT(app.user.speed, app.u.Key)
-    eventMOVEWITHMOUSE(app.user.pos, app.u.Key) 
-    eventSPAWNCUBE(app.u.Key, app.cubes, app.mousePos, app.scroll, app.n)
+    eventMOVEWITHMOUSE(app.user.pos, app.u.Mouse) 
+    eventSPAWNCUBE(app.u.Key, app.u.Mouse, app.cubes, app.mousePos, app.scroll, app.n)
+    eventSAVE(app.u.Key, app.cubes, app.lh)

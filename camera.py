@@ -1,6 +1,6 @@
 import pygame, utils
 
-U = utils.main()
+U = utils.utils()
 
 class camera:
     def __init__(self):

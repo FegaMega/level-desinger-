@@ -1,9 +1,9 @@
 import pygame, json, sys, utils, collision, objects, camera
-from utils import main
 from pygame.locals import *
 from JH import JsonHandler
 import settingsfolder
 import inputControler
+import levelhandler
 
 
 
@@ -23,12 +23,14 @@ class designer:
     def __init__(self):
         self.user = camera.camera()
         self.jh = JsonHandler()
-        self.u = utils.main()
+        self.u = utils.utils()
         self.sh = settingsfolder.settingshandeler()
         self.iC = inputControler
+        self.lh = levelhandler.levelhandeler("level.json")
         self.r = True
         self.scroll = [0, 0]
         self.cubes = []
+        self.lh.objectReader(self.cubes)
         self.mousePos = [0, 0]
         self.n: int = 0
     def drawCubes(self):
@@ -55,7 +57,7 @@ def main() -> int:
             # Avsluta kod
             if event.type == QUIT:
                 app.r = False
-            app.iC.inputSaver(event, app.u.Key)
+            app.iC.inputSaver(event, app.u.Key, app.u.Mouse)
         app.iC.inputHandler(app)
             
         # Ritar object
