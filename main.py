@@ -37,6 +37,7 @@ class designer:
         for i in self.cubes:
             i.draw(self.scroll)
     def mousePosUpdate(self):
+        self.u.inputInfo("Mouse", "MOUSE", 0, pygame.mouse.get_pos())
         return pygame.mouse.get_pos()
     def scrollFunc(self):
         self.scroll[0] += (self.user.pos[0] + self.user.size[0]/2 - self.scroll[0] - self.u.screenSize[0] / 2) / 10
@@ -52,12 +53,15 @@ def main() -> int:
     while app.r == True:
         app.mousePos = app.mousePosUpdate()
         app.u.screen.fill((146, 244, 255)) # Dubbelbuffer (ej visad bild)
+        #Updaterar mus positionen
+        app.mousePos = app.mousePosUpdate()
         # Töm (hantera) eventkön
         for event in pygame.event.get():
             # Avsluta kod
             if event.type == QUIT:
                 app.r = False
-            app.iC.inputSaver(event, app.u.Key, app.u.Mouse)
+            else:
+                app.iC.inputSaver(event, app.u.Key, app.u.Mouse)
         app.iC.inputHandler(app)
             
         # Ritar object
@@ -67,8 +71,6 @@ def main() -> int:
         # uppdaterar skärmen
         
         pygame.display.update()
-        #Updaterar mus positionen
-        app.mousePos = app.mousePosUpdate
         # 60 Fps limit
         pygame.time.Clock().tick(60)
     return 0
