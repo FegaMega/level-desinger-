@@ -115,20 +115,21 @@ def eventDRAGXSIZEONCUBE(Cubes: list, utils, LH, scroll):
     tolerance = 5
     
     for cube in Cubes:
-        print(cube.extra_info)
-        
-        if collision.mouseCollision(mouse[0][0] + scroll[0], mouse[0][1] +  scroll[1], cube.pos[0] + cube.size[0] - tolerance, cube.pos[1], tolerance, cube.size[1]) == True and mouseLeft[0] == True:
-            cube.extra_info = ["dragingRight"]   
-        print(cube.extra_info)
-        if mouseLeft[0] == False:
-                cube.extra_info = [""]
-        print(cube.extra_info)
-        if cube.extra_info == "dragingRight":
-            cube.size[0] = mouse[0][0] + scroll[0] - cube.pos[0]
-            if cube.size[0] < tolerance:
-                cube.size[0] = tolerance
-            LH.objectWriter(Cubes)
-        print(cube.extra_info)
+        if collision.mouseCollision(mouse[0][0] + scroll[0], mouse[0][1] +  scroll[1], cube.pos[0] + cube.size[0] - tolerance, cube.pos[1], tolerance, cube.size[1]) == True:
+            cube.extra_info.append("drawRightGreen")
+            if mouseLeft[0] == True:
+                cube.extra_info.append("dragingRight")
+        for i in cube.extra_info:
+            if mouseLeft[0] == False and i == "dragingRight":
+                indexI = cube.extra_info.index("dragingRight")
+                del cube.extra_info[indexI]
+            if i == "dragingRight":
+                cube.size[0] = mouse[0][0] + scroll[0] - cube.pos[0]
+                if cube.size[0] < tolerance:
+                    cube.size[0] = tolerance
+            if collision.mouseCollision(mouse[0][0] + scroll[0], mouse[0][1] +  scroll[1], cube.pos[0] + cube.size[0] - tolerance, cube.pos[1], tolerance, cube.size[1]) == False and i == "drawRightGreen":
+                indexI = cube.extra_info.index("drawRightGreen")
+                del cube.extra_info[indexI]
 
 def inputSaver(event, Key, Mouse):
     

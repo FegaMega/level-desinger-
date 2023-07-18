@@ -13,3 +13,6 @@ class cube:
     def draw(self, scroll=[0, 0]):
         self.rect = pygame.Rect(self.pos[0] - scroll[0], self.pos[1] - scroll[1], self.size[0], self.size[1])
         pygame.draw.rect(U.screen, self.color, self.rect)
+        for i in self.extra_info:
+            if i == "drawRightGreen":
+                pygame.draw.rect(U.screen, (0, 255, 0), pygame.Rect(self.pos[0] + self.size[0] - U.tolerance, self.pos[1], U.tolerance, self.size[1]))

@@ -8,6 +8,7 @@ class utils:
         self.user_primary_display_size = [Primary_screen.width, Primary_screen.height]
         self.screenSize = [700, 700]
         self.screen = pygame.display.set_mode(self.screenSize)
+        self.tolerance = 5
         self.Key = [
             # How to read
 

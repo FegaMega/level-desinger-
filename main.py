@@ -73,6 +73,7 @@ def main() -> int:
         pygame.display.update()
         # 60 Fps limit
         pygame.time.Clock().tick(60)
+    app.lh.objectWriter(app.cubes)
     return 0
 
 
