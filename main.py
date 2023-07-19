@@ -33,11 +33,15 @@ class designer:
         self.lh.objectReader(self.cubes)
         self.mousePos = [0, 0]
         self.n: int = 0
+        self.draging = [
+            False, 0, 
+            False, 0
+            ]
     def drawCubes(self):
         for i in self.cubes:
             i.draw(self.scroll)
     def mousePosUpdate(self):
-        self.u.inputInfo("Mouse", "MOUSE", 0, pygame.mouse.get_pos())
+        self.u.changeInfo("Mouse", "MOUSE", 0, 1, pygame.mouse.get_pos())
         return pygame.mouse.get_pos()
     def scrollFunc(self):
         self.scroll[0] += (self.user.pos[0] + self.user.size[0]/2 - self.scroll[0] - self.u.screenSize[0] / 2) / 10
