@@ -124,7 +124,7 @@ def eventDRAGXSIZEONCUBE(Cubes: list, utils, scroll, Draging):
                 cube.extra_info.append(True)
             else:
                 cube.extra_info[cube.extra_info.index("drawRightGreen")+1] = True
-            if mouseLeft[0] == True and Draging[0] == False and Draging[3] == cube or mouseLeft == True and Draging[0] == False and Draging[3] == 0:
+            if mouseLeft[0] == True and Draging == cube or mouseLeft[0] == True and Draging == 0:
                 outputDR = utils.getInfo(cube.extra_info, "dragRight", 1)
                 if outputDR.__class__ != bool:
                     cube.extra_info.append("dragRight")
@@ -132,8 +132,7 @@ def eventDRAGXSIZEONCUBE(Cubes: list, utils, scroll, Draging):
                 
                 else:
                     cube.extra_info[cube.extra_info.index("dragRight")+1] = True
-                Draging[0] = True
-                Draging[1] = cube    
+                Draging = cube    
         try:
             outputDRG = utils.getInfo(cube.extra_info, "drawRightGreen", 1)
         except:
@@ -149,8 +148,7 @@ def eventDRAGXSIZEONCUBE(Cubes: list, utils, scroll, Draging):
         if mouseLeft[0] == False:
             try:
                 cube.extra_info[cube.extra_info.index("dragRight")+1] = False
-                Draging[0] = False
-                Draging[1] = 0
+                Draging = 0
             except:
                 TypeError
                 NameError
@@ -183,15 +181,14 @@ def eventDRAGYSIZEONCUBE(Cubes: list, utils, scroll, Draging):
                 cube.extra_info.append(True)
             else:
                 cube.extra_info[cube.extra_info.index("drawDownGreen")+1] = True
-            if mouseLeft[0] == True and Draging[2] == False and Draging[1] == cube or mouseLeft == True and Draging[2] == False and Draging[1] == 0:
+            if mouseLeft[0] == True and Draging == cube or mouseLeft[0] == True and Draging == 0:
                 outputDD = utils.getInfo(cube.extra_info, "dragDown", 1)
                 if outputDD.__class__ != bool:
                     cube.extra_info.append("dragDown")
                     cube.extra_info.append(True)
                 else:
                     cube.extra_info[cube.extra_info.index("dragDown")+1] = True
-                Draging[2] = True
-                Draging[3] = cube
+                Draging = cube
         try:
             outputDDG = utils.getInfo(cube.extra_info, "drawDownGreen", 1)
         except:
@@ -207,8 +204,7 @@ def eventDRAGYSIZEONCUBE(Cubes: list, utils, scroll, Draging):
         if mouseLeft[0] == False:
             try:
                 cube.extra_info[cube.extra_info.index("dragDown")+1] = False
-                Draging[2] = False
-                Draging[3] = 0
+                Draging = 0
             except:
                 TypeError
                 NameError

@@ -33,10 +33,7 @@ class designer:
         self.lh.objectReader(self.cubes)
         self.mousePos = [0, 0]
         self.n: int = 0
-        self.draging = [
-            False, 0, 
-            False, 0
-            ]
+        self.draging = 0
     def drawCubes(self):
         for i in self.cubes:
             i.draw(self.scroll)
