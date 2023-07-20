@@ -111,28 +111,30 @@ def eventDELETECUBE(Cubes: list, utils, LH):
         i += 1 
 
 
-def eventDRAGXSIZEONCUBE(Cubes: list, utils, scroll, Draging):
+def eventDRAGXSIZEONCUBE(Cubes: list, utils, scroll, draging, moving):
     mouse = utils.getInfo("Mouse", "MOUSE", 1)
     mouseLeft = utils.getInfo("Mouse", "MOUSELEFT", 1)
     outputDR = 0
     outputDRG = 0
     for cube in Cubes:
-        if True == collision.mouseCollision(mouse[0][0] + scroll[0], mouse[0][1] + scroll[1], (cube.pos[0] + cube.size[0] - utils.tolerance), cube.pos[1], utils.tolerance, cube.size[1]):
-            outputDRG = utils.getInfo(cube.extra_info, "drawRightGreen", 1)
-            if outputDRG.__class__ != bool:
-                cube.extra_info.append("drawRightGreen")
-                cube.extra_info.append(True)
-            else:
-                cube.extra_info[cube.extra_info.index("drawRightGreen")+1] = True
-            if mouseLeft[0] == True and Draging == cube or mouseLeft[0] == True and Draging == 0:
-                outputDR = utils.getInfo(cube.extra_info, "dragRight", 1)
-                if outputDR.__class__ != bool:
-                    cube.extra_info.append("dragRight")
+        if True == collision.mouseCollision(mouse[0][0] + scroll[0], mouse[0][1] + scroll[1], (cube.pos[0] + cube.size[0] - utils.tolerance), cube.pos[1], utils.tolerance, cube.size[1]) and moving[0] == False:
+            if draging[0] == False or draging[0] == True and draging[1] == cube:
+                outputDRG = utils.getInfo(cube.extra_info, "drawRightGreen", 1)
+                if outputDRG.__class__ != bool:
+                    cube.extra_info.append("drawRightGreen")
                     cube.extra_info.append(True)
-                
                 else:
-                    cube.extra_info[cube.extra_info.index("dragRight")+1] = True
-                Draging = cube    
+                    cube.extra_info[cube.extra_info.index("drawRightGreen")+1] = True
+                if mouseLeft[0] == True:
+                    outputDR = utils.getInfo(cube.extra_info, "dragRight", 1)
+                    if outputDR.__class__ != bool:
+                        cube.extra_info.append("dragRight")
+                        cube.extra_info.append(True)
+
+                    else:
+                        cube.extra_info[cube.extra_info.index("dragRight")+1] = True
+                    draging[0] = True 
+                    draging[1] = cube
         try:
             outputDRG = utils.getInfo(cube.extra_info, "drawRightGreen", 1)
         except:
@@ -148,7 +150,8 @@ def eventDRAGXSIZEONCUBE(Cubes: list, utils, scroll, Draging):
         if mouseLeft[0] == False:
             try:
                 cube.extra_info[cube.extra_info.index("dragRight")+1] = False
-                Draging = 0
+                draging[0] = False
+                draging[1] = 0
             except:
                 TypeError
                 NameError
@@ -168,27 +171,29 @@ def eventDRAGXSIZEONCUBE(Cubes: list, utils, scroll, Draging):
             ValueError
             TypeError
 
-def eventDRAGYSIZEONCUBE(Cubes: list, utils, scroll, Draging):
+def eventDRAGYSIZEONCUBE(Cubes: list, utils, scroll, draging, moving):
     mouse = utils.getInfo("Mouse", "MOUSE", 1)
     mouseLeft = utils.getInfo("Mouse", "MOUSELEFT", 1)
     outputDD = 0
     outputDDG = 0
     for cube in Cubes:
-        if True == collision.mouseCollision(mouse[0][0] + scroll[0], mouse[0][1] + scroll[1], cube.pos[0], cube.pos[1] + cube.size[1] - utils.tolerance, cube.size[0], utils.tolerance):
-            outputDDG = utils.getInfo(cube.extra_info, "drawDownGreen", 1)
-            if outputDDG.__class__ != bool:
-                cube.extra_info.append("drawDownGreen")
-                cube.extra_info.append(True)
-            else:
-                cube.extra_info[cube.extra_info.index("drawDownGreen")+1] = True
-            if mouseLeft[0] == True and Draging == cube or mouseLeft[0] == True and Draging == 0:
-                outputDD = utils.getInfo(cube.extra_info, "dragDown", 1)
-                if outputDD.__class__ != bool:
-                    cube.extra_info.append("dragDown")
+        if True == collision.mouseCollision(mouse[0][0] + scroll[0], mouse[0][1] + scroll[1], cube.pos[0], cube.pos[1] + cube.size[1] - utils.tolerance, cube.size[0], utils.tolerance) and moving[0] == False:
+            if draging[0] == False or draging[0] == True and draging[1] == cube:
+                outputDDG = utils.getInfo(cube.extra_info, "drawDownGreen", 1)
+                if outputDDG.__class__ != bool:
+                    cube.extra_info.append("drawDownGreen")
                     cube.extra_info.append(True)
                 else:
-                    cube.extra_info[cube.extra_info.index("dragDown")+1] = True
-                Draging = cube
+                    cube.extra_info[cube.extra_info.index("drawDownGreen")+1] = True
+                if mouseLeft[0] == True:
+                    outputDD = utils.getInfo(cube.extra_info, "dragDown", 1)
+                    if outputDD.__class__ != bool:
+                        cube.extra_info.append("dragDown")
+                        cube.extra_info.append(True)
+                    else:
+                        cube.extra_info[cube.extra_info.index("dragDown")+1] = True
+                    draging[0] = True
+                    draging[1] = cube
         try:
             outputDDG = utils.getInfo(cube.extra_info, "drawDownGreen", 1)
         except:
@@ -204,7 +209,8 @@ def eventDRAGYSIZEONCUBE(Cubes: list, utils, scroll, Draging):
         if mouseLeft[0] == False:
             try:
                 cube.extra_info[cube.extra_info.index("dragDown")+1] = False
-                Draging = 0
+                draging[0] = False
+                draging[1] = 0
             except:
                 TypeError
                 NameError
@@ -224,8 +230,20 @@ def eventDRAGYSIZEONCUBE(Cubes: list, utils, scroll, Draging):
             ValueError
             TypeError
         
-
-
+def eventMOVECUBE(Cubes:list, utils, scroll, draging, moving):
+    mouse = utils.getInfo("Mouse", "MOUSE", 1)
+    mouseLeft = utils.getInfo("Mouse", "MOUSELEFT", 1)
+    for cube in Cubes:
+        if mouseLeft[0] == True and draging[0] == False and moving[0] == False and True == collision.mouseCollision(mouse[0][0]+scroll[0], mouse[0][1]+scroll[1], cube.pos[0], cube.pos[1], cube.size[0], cube.size[1]):
+            moving[0] = True
+            cube.extra_info.append("holding")
+        for info in cube.extra_info:
+            if info == "holding":
+                cube.pos[0] = round(mouse[0][0] + scroll[0] - (cube.size[0] /2))
+                cube.pos[1] = round(mouse[0][1] + scroll[1] - (cube.size[1] /2))
+                if mouseLeft[0] == False:
+                    del cube.extra_info[cube.extra_info.index("holding")]
+                    moving[0] == False
 
 def inputSaver(event, Key, Mouse):
     
@@ -271,5 +289,6 @@ def inputHandler(app):
     eventMOVEWITHMOUSE(app.user.pos, app.u.Mouse) 
     eventSPAWNCUBE(app.u.Key, app.u.Mouse, app.cubes, app.mousePos, app.scroll, app.n, app.lh)
     eventDELETECUBE(app.cubes, app.u, app.lh)
-    eventDRAGXSIZEONCUBE(app.cubes, app.u, app.scroll, app.draging)
-    eventDRAGYSIZEONCUBE(app.cubes, app.u, app.scroll, app.draging)
+    eventDRAGXSIZEONCUBE(app.cubes, app.u, app.scroll, app.draging, app.moving)
+    eventDRAGYSIZEONCUBE(app.cubes, app.u, app.scroll, app.draging, app.moving)
+    eventMOVECUBE(app.cubes, app.u, app.scroll, app.draging, app.moving)
