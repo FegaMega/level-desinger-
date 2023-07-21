@@ -54,49 +54,16 @@ class utils:
             "MOUSE", [[0, 0], [0, 0]] #[str, pos, oldpos]
 
         ]
-    def getInfo(self, List, item, offset = 0):
-        if List == "Mouse":
-            try:
-                return self.Mouse[(self.Mouse.index(item)+offset)]
-            except TypeError:
-                return TypeError
-        elif List == "Key":
-            try:
-                return self.Key[(self.Key.index(item)+offset)]
-            except TypeError:
-                return TypeError
-        else:
-            try:
-                return List[(List.index(item)+offset)]
-            except:
-                NameError
-                
-                TypeError
-                
-                ValueError
-                
-                return 1
-            
-    def changeInfo(self, List:list, item, changeIndex:int = 0, offset=0, Input=0):
-        if List == "Mouse":
-            self.Mouse[(self.Mouse.index(item)+offset)][changeIndex] = Input
-        elif List == "Key":
-            self.Key[(self.Key.index(item)+offset)][changeIndex] = Input
-        else:
-            try:
-                List[(List.index(item)+offset)] = Input
-            except List.__class__ != list or NameError:
-                if List.__class__ != list:
-                    print("List is not type: list and if you are trying to access Mouse or Key list it is not spelt correctly")
-                else:
-                    print("List does not exist")
-    def addInfo(self, List:list, item, append:bool, insert:bool, insertpoint:int = 1):
-        if append == insert:
-            print("addInfo error")
-            return 1
-        if append == True:
-            List.append(item)
-        if insert == True:
-            List.insert(item, insertpoint)
+    def rANDwMouse(self, Mouse, rORw:str):
+        if rORw == "w":
+            self.Mouse = Mouse
+        elif rORw == "r":
+            print(self.Mouse)
+            return self.Mouse
+    def rANDwKey(self, Key, rORw:str): # self, var you want to write to origional or want returned, read or write
+        if rORw == "w":
+            self.Key = Key
+        elif rORw == "r":
+            return self.Key
     def newScreen(self):
         self.screen = pygame.display.set_mode(self.screenSize, vsync=1)
