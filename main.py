@@ -34,6 +34,7 @@ class designer:
         self.mousePos = [0, 0]
         self.draging = [False, 0]
         self.moving = False
+        self.VisualMisc = []
     def rANDwMoving(self, moving, rORw:str):
         if rORw == "w":
             self.moving = moving
@@ -59,12 +60,20 @@ class designer:
             self.cubes = cubes
         elif rORw == "r":
             return self.cubes
+    def rANDwVisualMisc(self, VisualMisc, rORw:str):
+        if rORw == "w":
+            self.VisualMisc = VisualMisc
+        elif rORw == "r":
+            return self.VisualMisc
     def drawCubes(self):
         for i in self.cubes:
-            i.draw(self.scroll)
+            i.draw(self.rANDwScroll)
+    def drawMisc(self):
+        for i in self.VisualMisc:
+            i.draw(self.rANDwScroll)
     def mousePosUpdate(self):
         mouse = self.u.rANDwMouse(0, "r")
-        mouse[mouse.index("MOUSE")+1] = pygame.mouse.get_pos()
+        mouse[mouse.index("MOUSE")+1][0] = pygame.mouse.get_pos()
         self.u.rANDwMouse(mouse, "w")
         return pygame.mouse.get_pos()
     def scrollFunc(self):

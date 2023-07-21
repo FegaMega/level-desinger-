@@ -57,7 +57,6 @@ class utils:
         if rORw == "w":
             self.Mouse = Mouse
         elif rORw == "r":
-            print(self.Mouse)
             return self.Mouse
     def rANDwKey(self, Key, rORw:str):
         if rORw == "w":
