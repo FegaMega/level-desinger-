@@ -32,18 +32,43 @@ class designer:
         self.cubes = []
         self.lh.objectReader(self.cubes)
         self.mousePos = [0, 0]
-        self.n: int = 0
         self.draging = [False, 0]
-        self.moving = [False, 0]
+        self.moving = False
+    def rANDwMoving(self, moving, rORw:str):
+        if rORw == "w":
+            self.moving = moving
+        elif rORw == "r":
+            return self.moving
+    def rANDwMousePos(self, mousePos, rORw:str):
+        if rORw == "w":
+            self.mousePos = mousePos
+        elif rORw == "r":
+            return self.mousePos
+    def rANDwDraging(self, draging, rORw:str):
+        if rORw == "w":
+            self.draging = draging
+        elif rORw == "r":
+            return self.draging
+    def rANDwScroll(self, scroll, rORw:str):
+        if rORw == "w":
+            self.scroll = scroll
+        elif rORw == "r":
+            return self.scroll
+    def rANDwCubes(self, cubes, rORw:str):
+        if rORw == "w":
+            self.cubes = cubes
+        elif rORw == "r":
+            return self.cubes
     def drawCubes(self):
         for i in self.cubes:
             i.draw(self.scroll)
     def mousePosUpdate(self):
-        self.u.changeInfo("Mouse", "MOUSE", 0, 1, pygame.mouse.get_pos())
+        self.u.rANDwMouse(pygame.mouse.get_pos(), "w")
         return pygame.mouse.get_pos()
     def scrollFunc(self):
         self.scroll[0] += (self.user.pos[0] + self.user.size[0]/2 - self.scroll[0] - self.u.screenSize[0] / 2) / 10
         self.scroll[1] += (self.user.pos[1] + self.user.size[0]/2 - self.scroll[1] - self.u.screenSize[1] / 2) / 10
+
     
 
 def main() -> int:
@@ -63,7 +88,7 @@ def main() -> int:
             if event.type == QUIT:
                 app.r = False
             else:
-                app.iC.inputSaver(event, app.u.Key, app.u.Mouse)
+                app.iC.inputSaver(event, app.u.rANDwKey, app.u.rANDwMouse)
         app.iC.inputHandler(app)
             
         # Ritar object
