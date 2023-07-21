@@ -12,17 +12,17 @@ class camera:
         if rORw == "w":
             self.pos = pos
         elif rORw == "r":
-            pos == self.pos
+            return self.pos
     def rANDwSize(self, size, rORw:str):
         if rORw == "w":
             self.size = size
         elif rORw == "r":
-            size == self.size
-    def rANDwColor(self, speed, rORw:str):
+            return self.size
+    def rANDwSpeed(self, speed, rORw:str):
         if rORw == "w":
             self.speed = speed
         elif rORw == "r":
-            speed == self.speed    
+            return self.speed    
     def draw(self, scroll=[0, 0]):
         playe = pygame.Rect(self.pos[0] - scroll[0], self.pos[1] - scroll[1], 50, 50)
         pygame.draw.rect(U.screen, (0, 255, 0), playe)

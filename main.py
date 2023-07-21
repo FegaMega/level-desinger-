@@ -63,7 +63,9 @@ class designer:
         for i in self.cubes:
             i.draw(self.scroll)
     def mousePosUpdate(self):
-        self.u.rANDwMouse(pygame.mouse.get_pos(), "w")
+        mouse = self.u.rANDwMouse(0, "r")
+        mouse[mouse.index("MOUSE")+1] = pygame.mouse.get_pos()
+        self.u.rANDwMouse(mouse, "w")
         return pygame.mouse.get_pos()
     def scrollFunc(self):
         self.scroll[0] += (self.user.pos[0] + self.user.size[0]/2 - self.scroll[0] - self.u.screenSize[0] / 2) / 10

@@ -49,18 +49,17 @@ class utils:
             "DEL", [False, pygame.K_DELETE]   
         ]
         self.Mouse = [
-            "MOUSELEFT", [False, 1],            
-            "MOUSERIGHT", [False, 3],           
-            "MOUSE", [[0, 0], [0, 0]] #[str, pos, oldpos]
-
-        ]
+            "MOUSELEFT", [False, 1],           
+            "MOUSERIGHT", [False, 3],
+            "MOUSE", [[0, 0], [0, 0]]#[str, pos, oldpos]
+            ] 
     def rANDwMouse(self, Mouse, rORw:str):
         if rORw == "w":
             self.Mouse = Mouse
         elif rORw == "r":
             print(self.Mouse)
             return self.Mouse
-    def rANDwKey(self, Key, rORw:str): # self, var you want to write to origional or want returned, read or write
+    def rANDwKey(self, Key, rORw:str):
         if rORw == "w":
             self.Key = Key
         elif rORw == "r":

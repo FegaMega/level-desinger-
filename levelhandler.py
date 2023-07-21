@@ -14,7 +14,6 @@ class levelhandeler:
         for Object in self.objects:
             
             Cubes.append(objects.cube(Object[0], Object[1], Object[2], Object[3], (Object[4][0], Object[4][1], Object[4][2])))
-            print(Object, Cubes)
         return Cubes
     def objectWriter(self, Cubes=[]):
         self.info = JH.JsonReader(self.levelfolder)
