@@ -145,41 +145,43 @@ def eventDRAGXSIZEONCUBE(rANDwCubes, utils, rANDwscroll, rANDwMoving, rANDwDragi
         extra_info = cube.rANDwExtra_info(0, "r")
 
         try:
-            outputDRG = extra_info[extra_info.index("drawRightGreen")+1]
+            outputDRG = extra_info.index("drawRightGreen")+1
         except:
             ValueError
             TypeError
             extra_info.append("drawRightGreen")
             extra_info.append(False)
+            outputDRG = extra_info.index("drawRightGreen")+1
         try:            
-            outputDR = extra_info[extra_info.index("dragRight")+1]
+            outputDR = extra_info.index("dragRight")+1
         except:
             ValueError
             TypeError
             extra_info.append("dragRight")
             extra_info.append(False)
+            outputDR = extra_info.index("dragRight")+1
             
         if True == collision.mouseCollision(mouse[0] + scroll[0], mouse[1] + scroll[1], (cube.pos[0] + cube.size[0] - utils.tolerance), cube.pos[1], utils.tolerance, cube.size[1]) and moving == False:
             if draging[0] == False or draging[0] == True and draging[1] == cube:
-                outputDRG = True
+                extra_info[outputDRG] = True
                 if mouseLeft[0] == True:
-                    cube.extra_info[cube.extra_info.index("dragRight")+1] = True
+                    extra_info[outputDR] = True
                     draging[0] = True 
                     draging[1] = cube
 
         if mouseLeft[0] == False:
-            outputDR = False
+            extra_info[outputDR] = False
             draging[0] = False
             draging[1] = 0
             if False == collision.mouseCollision(mouse[0] + scroll[0], mouse[1] + scroll[1], (cube.pos[0] + cube.size[0] - utils.tolerance), cube.pos[1], utils.tolerance, cube.size[1]):
-                outputDRG = False
+                extra_info[outputDRG] = False
 
 
-        if outputDR == True:
+        if extra_info[outputDR] == True:
             cube.size[0] = mouse[0] + scroll[0] - cube.pos[0]
             if cube.size[0] < utils.tolerance:
                 cube.size[0] = utils.tolerance
-        if outputDRG == True:
+        if extra_info[outputDRG] == True:
             VisMisc.append(objects.cube(cube.pos[0] + cube.size[0] - utils.tolerance, cube.pos[1], utils.tolerance, cube.size[1]))
         cube.rANDwExtra_info(extra_info, "w")
         rANDwVisualMisc(VisMisc, "w")
