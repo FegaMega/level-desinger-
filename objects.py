@@ -44,8 +44,7 @@ class cube:
             TypeError
         try:
             index = self.extra_info.index("drawRightGreen")
-            print (self.extra_info[index])
             if True == self.extra_info[index+1]:
-                pygame.draw.rect(U.screen, (0, 255, 0), pygame.Rect(self.pos[0] - self.size[0] - U.tolerance - scroll[0], self.pos[1] - scroll[1], U.tolerance, self.size[1]))
+                pygame.draw.rect(U.screen, (0, 255, 0), pygame.Rect(self.pos[0] + self.size[0] - U.tolerance - scroll[0], self.pos[1] - scroll[1], U.tolerance, self.size[1]))
         except:
             TypeError
