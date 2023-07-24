@@ -4,7 +4,7 @@ from JH import JsonHandler
 import settingsfolder
 import inputControler
 import levelhandler
-
+from music import mixer
 
 
 
@@ -21,6 +21,8 @@ def ArrayOfStrToInt(str):
 
 class designer:
     def __init__(self):
+        self.music_lib = ["Cipher_BGM.flac", "Aloft_BGM.flac", "lemmino-nocturnal.flac"]
+        self.m = mixer(self.music_lib)
         self.user = camera.camera()
         self.jh = JsonHandler()
         self.u = utils.utils()
@@ -106,6 +108,9 @@ def main() -> int:
         app.drawCubes()
         app.user.move()
         app.scrollFunc()
+
+        #spelar musik
+        app.m.RunMusic()
         # uppdaterar skärmen
         
         pygame.display.update()
