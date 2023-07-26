@@ -91,34 +91,47 @@ def eventMOVEWITHMOUSE(rANDwPos, rANDwMouse):
         pos[1] = (Mouse[1][1] - Mouse[0][1] + pos[1])
         Mouse[1] = Mouse[0]
 
-def SPAWNCUBE(rANDwCubes, rANDwMouse, rANDwscroll, LH):
+def SPAWNCUBE(rANDwCubes, rANDwMouse, rANDwscroll, rANDwHolding_newCube, LH, BUTTONORKEYBOARD):
     Cubes = rANDwCubes(0, "r")
     scroll = rANDwscroll(0, "r")
     Mouse = rANDwMouse(0, "r")
-    MouseLeft = Mouse[Mouse.index("MOUSELEFT")+1]
     mouse = Mouse[Mouse.index("MOUSE")+1][0]
-    n = 0
-    for cube in Cubes:
-        for info in cube.extra_info:
-            if info == "holding":
-                n += 1
-                cube.pos[0] = round(mouse[0] + scroll[0] - (cube.size[0] /2))
-                cube.pos[1] = round(mouse[1] + scroll[1] - (cube.size[1] /2))
-                if MouseLeft[0] == True:
-                    del cube.extra_info[info.index("holding")]
-    if n == 0:
+    holding_newCube = rANDwHolding_newCube(0, "r")
+    BOK = BUTTONORKEYBOARD
+    if holding_newCube == False:
         Cubes.append(objects.cube(mouse[0] + scroll[0], mouse[1] + scroll[1], 50, 50))
-        Cubes[len(Cubes)-1].extra_info = ["holding"]
+        Cubes[len(Cubes)-1].extra_info = ["holding", str(BOK)]
+        holding_newCube = True
         LH.objectWriter(Cubes)
         rANDwCubes(Cubes, "w")
-    n = 0
-    return Cubes
+        holding_newCube = rANDwHolding_newCube(holding_newCube, "w")
 
-def eventSPAWNCUBE(rANDwCubes, rANDwMouse, rANDwKey, rANDwscroll, LH):
+def eventSPAWNCUBE(rANDwCubes, rANDwMouse, rANDwKey, rANDwscroll, rANDwHolding_newCube, LH):
     Key = rANDwKey(0, "r")
     O = Key[Key.index("O")+1]
     if O[0] == True:
-        SPAWNCUBE(rANDwCubes, rANDwMouse, rANDwscroll, LH)
+        SPAWNCUBE(rANDwCubes, rANDwMouse, rANDwscroll, rANDwHolding_newCube, LH, "KEYBOARD")
+
+def spawnCubeHandling(rANDwCubes, rANDwMouse, rANDwscroll, rANDwHolding_newCube):
+    Cubes = rANDwCubes(0, "r")
+    scroll = rANDwscroll(0, "r")
+    Mouse = rANDwMouse(0, "r")
+    holding_newCube = rANDwHolding_newCube(0, "r")
+    MouseLeft = Mouse[Mouse.index("MOUSELEFT")+1]
+    mouse = Mouse[Mouse.index("MOUSE")+1][0]
+    for cube in Cubes:
+        for info in cube.extra_info:
+            if info == "holding":
+                cube.pos[0] = round(mouse[0] + scroll[0] - (cube.size[0] /2))
+                cube.pos[1] = round(mouse[1] + scroll[1] - (cube.size[1] /2))
+                CurrentBOK = cube.extra_info[cube.extra_info.index("holding")+1]
+                print(CurrentBOK)
+                if MouseLeft[0] == True and CurrentBOK == "KEYBOARD" or MouseLeft[0] == False and CurrentBOK == "BUTTON":
+                    del cube.extra_info[info.index("holding")]
+                    del cube.extra_info[info.index("holding")+1]
+                    holding_newCube = False
+                    rANDwHolding_newCube(holding_newCube, "w")
+                    
 
 def eventDELETECUBE(rANDwCubes, rANDwscroll, utils, LH):
     Cubes = rANDwCubes(0, "r")
@@ -270,14 +283,14 @@ def eventMOVECUBE(rANDwCubes, utils, rANDwscroll, rANDwMoving, rANDwDraging):
     rANDwDraging(draging, "w")
     rANDwMoving(moving, "w")
 
-def eventPRESSEDOBJECTBUTTON(rANDwButtons, rANDwMousePos, rANDwCubes, rANDwMouse, rANDwScroll, lh):
+def eventPRESSEDOBJECTBUTTON(rANDwButtons, rANDwMousePos, rANDwCubes, rANDwMouse, rANDwScroll, rANDwHolding_newCube, lh):
     buttons = rANDwButtons(0, "r")
     mousePos = rANDwMousePos(0, "r")
     Mouse = rANDwMouse(0, "r")
     mouseLeft = Mouse[Mouse.index("MOUSELEFT")+1]
     for button in buttons:
-        if collision.mouseCollision(mousePos[0], mousePos[1], button.pos[0], button.pos[1], button.size[0], button.size[1]) == True and mouseLeft[0] == True:
-            SPAWNCUBE(rANDwCubes, rANDwMouse, rANDwScroll, lh)
+        if collision.mouseCollision(mousePos[0], mousePos[1], button.pos[0], button.pos[1], button.size[0], button.size[1]) == True and mouseLeft[0] == True and button.type == "object":
+            SPAWNCUBE(rANDwCubes, rANDwMouse, rANDwScroll, rANDwHolding_newCube, lh, "BUTTON")
     
 
 
@@ -329,9 +342,10 @@ def inputHandler(app):
     eventLEFT(app.u.rANDwKey, app.user.rANDwSpeed)
     eventRIGHT(app.u.rANDwKey, app.user.rANDwSpeed)
     eventMOVEWITHMOUSE(app.user.rANDwPos, app.u.rANDwMouse) 
-    eventSPAWNCUBE(app.rANDwCubes, app.u.rANDwMouse, app.u.rANDwKey, app.rANDwScroll, app.lh)
+    eventSPAWNCUBE(app.rANDwCubes, app.u.rANDwMouse, app.u.rANDwKey, app.rANDwScroll, app.rANDwHolding_newCube, app.lh)
     eventDELETECUBE(app.rANDwCubes, app.rANDwScroll, app.u, app.lh, )
     eventDRAGXSIZEONCUBE(app.rANDwCubes, app.u, app.rANDwScroll, app.rANDwMoving, app.rANDwDraging, app.rANDwVisualMisc)
     eventDRAGYSIZEONCUBE(app.rANDwCubes, app.u, app.rANDwScroll, app.rANDwMoving, app.rANDwDraging)
     eventMOVECUBE(app.rANDwCubes, app.u, app.rANDwScroll, app.rANDwMoving, app.rANDwDraging)
-    eventPRESSEDOBJECTBUTTON(app.rANDwButtons ,app.rANDwMousePos, app.rANDwCubes, app.u.rANDwMouse, app.rANDwScroll, app.lh)
+    eventPRESSEDOBJECTBUTTON(app.rANDwButtons ,app.rANDwMousePos, app.rANDwCubes, app.u.rANDwMouse, app.rANDwScroll, app.rANDwHolding_newCube, app.lh)
+    spawnCubeHandling(app.rANDwCubes, app.u.rANDwMouse, app.rANDwScroll, app.rANDwHolding_newCube)

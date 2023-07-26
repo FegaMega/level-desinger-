@@ -40,11 +40,17 @@ class designer:
         self.draging = [False, 0]
         self.moving = False
         self.VisualMisc = []
+        self.holding_newCube = False
     def rANDwMoving(self, moving, rORw:str):
         if rORw == "w":
             self.moving = moving
         elif rORw == "r":
             return self.moving
+    def rANDwHolding_newCube(self, holding_newCube, rORw:str):
+        if rORw == "w":
+            self.holding_newCube = holding_newCube
+        elif rORw == "r":
+            return self.holding_newCube
     def rANDwMousePos(self, mousePos, rORw:str):
         if rORw == "w":
             self.mousePos = mousePos
@@ -121,7 +127,7 @@ def main() -> int:
         app.scrollFunc()
         app.drawButtons()
         #spelar musik
-        app.m.RunMusic()
+        #app.m.RunMusic()
         # uppdaterar skärmen
         pygame.display.update()
 
