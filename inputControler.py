@@ -79,6 +79,7 @@ def eventRIGHT(rANDwKey, rANDwSpeed):
             else:
                 speed[0] -= XDECELERATION
     return [speed, "playerSpeed"]
+
 def eventMOVEWITHMOUSE(rANDwPos, rANDwMouse):
     mouse = rANDwMouse(0, "r")
     MouseRight = mouse[mouse.index("MOUSERIGHT")+1]
@@ -89,30 +90,35 @@ def eventMOVEWITHMOUSE(rANDwPos, rANDwMouse):
         pos[0] = (Mouse[1][0] - Mouse[0][0] + pos[0])
         pos[1] = (Mouse[1][1] - Mouse[0][1] + pos[1])
         Mouse[1] = Mouse[0]
-def eventSPAWNCUBE(rANDwCubes, rANDwMouse, rANDwKey, rANDwscroll, LH):
+
+def SPAWNCUBE(rANDwCubes, rANDwMouse, rANDwscroll, LH):
     Cubes = rANDwCubes(0, "r")
     scroll = rANDwscroll(0, "r")
     Mouse = rANDwMouse(0, "r")
     MouseLeft = Mouse[Mouse.index("MOUSELEFT")+1]
     mouse = Mouse[Mouse.index("MOUSE")+1][0]
-    Key = rANDwKey(0, "r")
-    O = Key[Key.index("O")+1]
     n = 0
     for cube in Cubes:
-        if cube.extra_info == ["holding"]:
-            n += 1
-            cube.pos[0] = round(mouse[0] + scroll[0] - (cube.size[0] /2))
-            cube.pos[1] = round(mouse[1] + scroll[1] - (cube.size[1] /2))
-            if MouseLeft[0] == True:
-                cube.extra_info = []
-    if n <= 0:
-        if O[0] == True:
-            Cubes.append(objects.cube(mouse[0] + scroll[0], mouse[1] + scroll[1], 50, 50))
-            Cubes[len(Cubes)-1].extra_info = ["holding"]
-            LH.objectWriter(Cubes)
+        for info in cube.extra_info:
+            if info == "holding":
+                n += 1
+                cube.pos[0] = round(mouse[0] + scroll[0] - (cube.size[0] /2))
+                cube.pos[1] = round(mouse[1] + scroll[1] - (cube.size[1] /2))
+                if MouseLeft[0] == True:
+                    del cube.extra_info[info.index("holding")]
+    if n == 0:
+        Cubes.append(objects.cube(mouse[0] + scroll[0], mouse[1] + scroll[1], 50, 50))
+        Cubes[len(Cubes)-1].extra_info = ["holding"]
+        LH.objectWriter(Cubes)
+        rANDwCubes(Cubes, "w")
     n = 0
     return Cubes
 
+def eventSPAWNCUBE(rANDwCubes, rANDwMouse, rANDwKey, rANDwscroll, LH):
+    Key = rANDwKey(0, "r")
+    O = Key[Key.index("O")+1]
+    if O[0] == True:
+        SPAWNCUBE(rANDwCubes, rANDwMouse, rANDwscroll, LH)
 
 def eventDELETECUBE(rANDwCubes, rANDwscroll, utils, LH):
     Cubes = rANDwCubes(0, "r")
@@ -253,16 +259,29 @@ def eventMOVECUBE(rANDwCubes, utils, rANDwscroll, rANDwMoving, rANDwDraging):
     for cube in Cubes:
         if mouseLeft[0] == True and draging[0] == False and moving == False and True == collision.mouseCollision(mouse[0]+scroll[0], mouse[1]+scroll[1], cube.pos[0], cube.pos[1], cube.size[0], cube.size[1]):
             moving = True
-            cube.extra_info.append("holding")
+            cube.extra_info.append("moving")
         for info in cube.extra_info:
-            if info == "holding":
+            if info == "moving":
                 cube.pos[0] = round(mouse[0] + scroll[0] - (cube.size[0] /2))
                 cube.pos[1] = round(mouse[1] + scroll[1] - (cube.size[1] /2))
                 if mouseLeft[0] == False:
                     moving = False
-                    del cube.extra_info[cube.extra_info.index("holding")]
+                    del cube.extra_info[cube.extra_info.index("moving")]
     rANDwDraging(draging, "w")
     rANDwMoving(moving, "w")
+
+def eventPRESSEDOBJECTBUTTON(rANDwButtons, rANDwMousePos, rANDwCubes, rANDwMouse, rANDwScroll, lh):
+    buttons = rANDwButtons(0, "r")
+    mousePos = rANDwMousePos(0, "r")
+    Mouse = rANDwMouse(0, "r")
+    mouseLeft = Mouse[Mouse.index("MOUSELEFT")+1]
+    for button in buttons:
+        if collision.mouseCollision(mousePos[0], mousePos[1], button.pos[0], button.pos[1], button.size[0], button.size[1]) == True and mouseLeft[0] == True:
+            SPAWNCUBE(rANDwCubes, rANDwMouse, rANDwScroll, lh)
+    
+
+
+
 
 def inputSaver(event, rANDwKey, rANDwMouse):
     Key = rANDwKey(0, "r")
@@ -315,3 +334,4 @@ def inputHandler(app):
     eventDRAGXSIZEONCUBE(app.rANDwCubes, app.u, app.rANDwScroll, app.rANDwMoving, app.rANDwDraging, app.rANDwVisualMisc)
     eventDRAGYSIZEONCUBE(app.rANDwCubes, app.u, app.rANDwScroll, app.rANDwMoving, app.rANDwDraging)
     eventMOVECUBE(app.rANDwCubes, app.u, app.rANDwScroll, app.rANDwMoving, app.rANDwDraging)
+    eventPRESSEDOBJECTBUTTON(app.rANDwButtons ,app.rANDwMousePos, app.rANDwCubes, app.u.rANDwMouse, app.rANDwScroll, app.lh)

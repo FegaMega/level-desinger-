@@ -5,7 +5,7 @@ utils = utils()
 
 class levelhandeler:
     def __init__(self, levelfolder):
-        self.levelfolder = levelfolder
+        self.levelfolder = (levelfolder)
         self.info = JH.JsonReader(self.levelfolder)
         self.objects:list = self.info["Level one"]["objects"]
     def objectReader(self, Cubes):

@@ -63,5 +63,10 @@ class utils:
             self.Key = Key
         elif rORw == "r":
             return self.Key
+    def rANDwScreen(self, screen, rORw:str):
+        if rORw == "w":
+            self.screen = screen
+        elif rORw == "r":
+            return self.screen
     def newScreen(self):
         self.screen = pygame.display.set_mode(self.screenSize, vsync=1)

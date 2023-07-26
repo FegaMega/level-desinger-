@@ -5,7 +5,7 @@ utils = utils()
 
 class settingshandeler:
     def __init__(self):
-        self.settingsfolder = "setting.json"
+        self.settingsfolder = "data/json/setting.json"
         self.currentSettingsInfo = JH.JsonReader(self.settingsfolder)
         self.currentSettingsInfo["userPrimaryDisplaySize"] = utils.user_primary_display_size
         JH.JsonWriter(self.settingsfolder, self.currentSettingsInfo)

@@ -1,10 +1,12 @@
-import pygame, json, sys, utils, collision, objects, camera
+import pygame, sys
+import json, utils, collision, objects, camera
 from pygame.locals import *
 from JH import JsonHandler
 import settingsfolder
 import inputControler
 import levelhandler
 from music import mixer
+from buttonControler import button
 
 
 
@@ -21,17 +23,18 @@ def ArrayOfStrToInt(str):
 
 class designer:
     def __init__(self):
-        self.music_lib = ["Cipher_BGM.flac", "Aloft_BGM.flac", "lemmino-nocturnal.flac"]
+        self.music_lib = ["data/music/Cipher_BGM.flac", "data/music/Aloft_BGM.flac", "data/music/lemmino-nocturnal.flac"]
         self.m = mixer(self.music_lib)
         self.user = camera.camera()
         self.jh = JsonHandler()
         self.u = utils.utils()
         self.sh = settingsfolder.settingshandeler()
         self.iC = inputControler
-        self.lh = levelhandler.levelhandeler("level.json")
+        self.lh = levelhandler.levelhandeler("data/json/level.json")
         self.r = True
         self.scroll = [0, 0]
         self.cubes = []
+        self.buttons = [button([self.u.screenSize[0]-20-184, 20], [184, 22], "data/img/object2.png", "object")]
         self.lh.objectReader(self.cubes)
         self.mousePos = [0, 0]
         self.draging = [False, 0]
@@ -62,6 +65,11 @@ class designer:
             self.cubes = cubes
         elif rORw == "r":
             return self.cubes
+    def rANDwButtons(self, button, rORw:str):
+        if rORw == "w":
+            self.buttons = button
+        elif rORw == "r":
+            return self.buttons
     def rANDwVisualMisc(self, VisualMisc, rORw:str):
         if rORw == "w":
             self.VisualMisc = VisualMisc
@@ -70,6 +78,9 @@ class designer:
     def drawCubes(self):
         for i in self.cubes:
             i.draw(self.rANDwScroll)
+    def drawButtons(self):
+        for button in self.buttons:
+            button.draw(self.u.rANDwScreen)
     def drawMisc(self):
         for i in self.VisualMisc:
             i.draw(self.rANDwScroll)
@@ -108,12 +119,12 @@ def main() -> int:
         app.drawCubes()
         app.user.move()
         app.scrollFunc()
-
+        app.drawButtons()
         #spelar musik
         app.m.RunMusic()
         # uppdaterar skärmen
-        
         pygame.display.update()
+
         # 60 Fps limit
         pygame.time.Clock().tick(60)
     app.lh.objectWriter(app.cubes)
