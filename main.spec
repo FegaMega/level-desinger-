@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(
-    ['main.py', 'camera.py', 'collision.py', 'inputControler.py', 'JH.py', 'levelhandler.py', 'music.py', 'objects.py', 'settingsfolder.py', 'utils.py'],
+    ['main.py', 'camera.py', 'buttonControler.py', 'collision.py', 'inputControler.py', 'JH.py', 'levelhandler.py', 'music.py', 'objects.py', 'settingsfolder.py', 'utils.py'],
     pathex=[],
     binaries=[],
     datas=[],

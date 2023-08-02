@@ -1,5 +1,9 @@
 import pygame
 from screeninfo import get_monitors
+import os
+x=100
+y=100
+os.environ['SDL_VIDEO_WINDOW_POS'] = '%d,%d' % (x,y)
 for m in get_monitors():
     if m.is_primary == True:
         Primary_screen = m
@@ -68,5 +72,13 @@ class utils:
             self.screen = screen
         elif rORw == "r":
             return self.screen
+    def rANDwScreenSize(self, screenSize, rORw:str):
+        if rORw == "w":
+            self.screenSize = screenSize
+        elif rORw == "r":
+            return self.screenSize
     def newScreen(self):
+        x=100
+        y=100
+        os.environ['SDL_VIDEO_WINDOW_POS'] = '%d,%d' % (x,y)
         self.screen = pygame.display.set_mode(self.screenSize, vsync=1)

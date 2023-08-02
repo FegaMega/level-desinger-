@@ -106,6 +106,27 @@ def SPAWNCUBE(rANDwCubes, rANDwMouse, rANDwscroll, rANDwHolding_newCube, LH, BUT
         rANDwCubes(Cubes, "w")
         holding_newCube = rANDwHolding_newCube(holding_newCube, "w")
 
+def SPAWNSPEED(rANDwCubes, rANDwMouse, rANDwscroll, rANDwHolding_newCube, LH, BUTTONORKEYBOARD):
+    Cubes = rANDwCubes(0, "r")
+    scroll = rANDwscroll(0, "r")
+    Mouse = rANDwMouse(0, "r")
+    mouse = Mouse[Mouse.index("MOUSE")+1][0]
+    holding_newCube = rANDwHolding_newCube(0, "r")
+    BOK = BUTTONORKEYBOARD
+    if holding_newCube == False:
+        Cubes.append(objects.cube(mouse[0] + scroll[0], mouse[1] + scroll[1], 50, 50, (0, 255, 0)))
+        Cubes[len(Cubes)-1].extra_info = ["holding", str(BOK)]
+        holding_newCube = True
+        LH.objectWriter(Cubes)
+        rANDwCubes(Cubes, "w")
+        holding_newCube = rANDwHolding_newCube(holding_newCube, "w")
+
+def eventSPAWNSPEED(rANDwCubes, rANDwMouse, rANDwKey, rANDwscroll, rANDwHolding_newCube, LH):
+    Key = rANDwKey(0, "r")
+    I = Key[Key.index("I")+1]
+    if I[0] == True:
+        SPAWNSPEED(rANDwCubes, rANDwMouse, rANDwscroll, rANDwHolding_newCube, LH, "KEYBOARD")
+
 def eventSPAWNCUBE(rANDwCubes, rANDwMouse, rANDwKey, rANDwscroll, rANDwHolding_newCube, LH):
     Key = rANDwKey(0, "r")
     O = Key[Key.index("O")+1]
@@ -289,10 +310,11 @@ def eventPRESSEDOBJECTBUTTON(rANDwButtons, rANDwMousePos, rANDwCubes, rANDwMouse
     Mouse = rANDwMouse(0, "r")
     mouseLeft = Mouse[Mouse.index("MOUSELEFT")+1]
     for button in buttons:
-        if collision.mouseCollision(mousePos[0], mousePos[1], button.pos[0], button.pos[1], button.size[0], button.size[1]) == True and mouseLeft[0] == True and button.type == "object":
-            SPAWNCUBE(rANDwCubes, rANDwMouse, rANDwScroll, rANDwHolding_newCube, lh, "BUTTON")
-    
-
+        if collision.mouseCollision(mousePos[0], mousePos[1], button.pos[0], button.pos[1], button.size[0], button.size[1]) == True and mouseLeft[0] == True:
+            if button.type == "object":
+                SPAWNCUBE(rANDwCubes, rANDwMouse, rANDwScroll, rANDwHolding_newCube, lh, "BUTTON")
+            if button.type == "speed":
+                SPAWNSPEED(rANDwCubes, rANDwMouse, rANDwScroll, rANDwHolding_newCube, lh, "BUTTON")
 
 
 
@@ -349,3 +371,4 @@ def inputHandler(app):
     eventMOVECUBE(app.rANDwCubes, app.u, app.rANDwScroll, app.rANDwMoving, app.rANDwDraging)
     eventPRESSEDOBJECTBUTTON(app.rANDwButtons ,app.rANDwMousePos, app.rANDwCubes, app.u.rANDwMouse, app.rANDwScroll, app.rANDwHolding_newCube, app.lh)
     spawnCubeHandling(app.rANDwCubes, app.u.rANDwMouse, app.rANDwScroll, app.rANDwHolding_newCube)
+    eventSPAWNSPEED(app.rANDwCubes, app.u.rANDwMouse, app.u.rANDwKey, app.rANDwScroll, app.rANDwHolding_newCube, app.lh)

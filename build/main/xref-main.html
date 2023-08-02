@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>modulegraph cross reference for JH.py, camera.py, collision.py, inputControler.py, levelhandler.py, main.py, music.py, objects.py, pyi_rth_inspect.py, pyi_rth_multiprocessing.py, pyi_rth_pkgres.py, pyi_rth_pkgutil.py, pyi_rth_pythoncom.py, pyi_rth_pywintypes.py, pyi_rth_win32comgenpy.py, settingsfolder.py, utils.py</title>
+    <title>modulegraph cross reference for JH.py, buttonControler.py, camera.py, collision.py, inputControler.py, levelhandler.py, main.py, music.py, objects.py, pyi_rth_inspect.py, pyi_rth_multiprocessing.py, pyi_rth_pkgres.py, pyi_rth_pkgutil.py, pyi_rth_pythoncom.py, pyi_rth_pywintypes.py, pyi_rth_win32comgenpy.py, settingsfolder.py, utils.py</title>
     <style>
       .node { padding: 0.5em 0 0.5em; border-top: thin grey dotted; }
       .moduletype { font: smaller italic }
@@ -11,7 +11,7 @@
     </style>
   </head>
   <body>
-    <h1>modulegraph cross reference for JH.py, camera.py, collision.py, inputControler.py, levelhandler.py, main.py, music.py, objects.py, pyi_rth_inspect.py, pyi_rth_multiprocessing.py, pyi_rth_pkgres.py, pyi_rth_pkgutil.py, pyi_rth_pythoncom.py, pyi_rth_pywintypes.py, pyi_rth_win32comgenpy.py, settingsfolder.py, utils.py</h1>
+    <h1>modulegraph cross reference for JH.py, buttonControler.py, camera.py, collision.py, inputControler.py, levelhandler.py, main.py, music.py, objects.py, pyi_rth_inspect.py, pyi_rth_multiprocessing.py, pyi_rth_pkgres.py, pyi_rth_pkgutil.py, pyi_rth_pythoncom.py, pyi_rth_pywintypes.py, pyi_rth_win32comgenpy.py, settingsfolder.py, utils.py</h1>
 
 <div class="node">
   <a name="JH.py"></a>
@@ -30,12 +30,30 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="buttonControler.py"></a>
+  <a target="code" href="///C:/Users/david/OneDrive/Dokument/GitHub/level-desinger-4/buttonControler.py" type="text/plain"><tt>buttonControler.py</tt></a>
+<span class="moduletype">Script</span>  <div class="import">
+imports:
+    <a href="#collision">collision</a>
+ &#8226;   <a href="#pygame">pygame</a>
+ &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#utils">utils</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#main.py">main.py</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="camera.py"></a>
   <a target="code" href="///C:/Users/david/OneDrive/Dokument/GitHub/level-desinger-4/camera.py" type="text/plain"><tt>camera.py</tt></a>
 <span class="moduletype">Script</span>  <div class="import">
 imports:
     <a href="#pygame">pygame</a>
- &#8226;   <a href="#utils">utils</a>
 
   </div>
   <div class="import">
@@ -104,6 +122,8 @@ imports:
  &#8226;   <a href="#_collections_abc">_collections_abc</a>
  &#8226;   <a href="#_weakrefset">_weakrefset</a>
  &#8226;   <a href="#abc">abc</a>
+ &#8226;   <a href="#buttonControler">buttonControler</a>
+ &#8226;   <a href="#buttonControler.py">buttonControler.py</a>
  &#8226;   <a href="#camera">camera</a>
  &#8226;   <a href="#camera.py">camera.py</a>
  &#8226;   <a href="#codecs">codecs</a>
@@ -489,7 +509,8 @@ imported by:
   <a target="code" href="///C:/Users/david/OneDrive/Dokument/GitHub/level-desinger-4/utils.py" type="text/plain"><tt>utils.py</tt></a>
 <span class="moduletype">Script</span>  <div class="import">
 imports:
-    <a href="#pygame">pygame</a>
+    <a href="#os">os</a>
+ &#8226;   <a href="#pygame">pygame</a>
  &#8226;   <a href="#screeninfo">screeninfo</a>
 
   </div>
@@ -2853,6 +2874,25 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="buttonControler"></a>
+  <a target="code" href="///C:/Users/david/OneDrive/Dokument/GitHub/level-desinger-4/buttonControler.py" type="text/plain"><tt>buttonControler</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#collision">collision</a>
+ &#8226;   <a href="#pygame">pygame</a>
+ &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#utils">utils</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#main.py">main.py</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="bz2"></a>
   <a target="code" href="///C:/Users/david/AppData/Local/Programs/Python/Python310/lib/bz2.py" type="text/plain"><tt>bz2</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
@@ -2905,7 +2945,6 @@ imported by:
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
     <a href="#pygame">pygame</a>
- &#8226;   <a href="#utils">utils</a>
 
   </div>
   <div class="import">
@@ -3273,7 +3312,9 @@ imported by:
   <a target="code" href="///C:/Users/david/OneDrive/Dokument/GitHub/level-desinger-4/collision.py" type="text/plain"><tt>collision</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imported by:
-    <a href="#inputControler">inputControler</a>
+    <a href="#buttonControler">buttonControler</a>
+ &#8226;   <a href="#buttonControler.py">buttonControler.py</a>
+ &#8226;   <a href="#inputControler">inputControler</a>
  &#8226;   <a href="#inputControler.py">inputControler.py</a>
  &#8226;   <a href="#main.py">main.py</a>
 
@@ -15469,6 +15510,8 @@ imported by:
  &#8226;   <a href="#unittest.loader">unittest.loader</a>
  &#8226;   <a href="#unittest.main">unittest.main</a>
  &#8226;   <a href="#urllib.request">urllib.request</a>
+ &#8226;   <a href="#utils">utils</a>
+ &#8226;   <a href="#utils.py">utils.py</a>
  &#8226;   <a href="#uu">uu</a>
  &#8226;   <a href="#webbrowser">webbrowser</a>
  &#8226;   <a href="#win32com">win32com</a>
@@ -17467,7 +17510,9 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#camera">camera</a>
+    <a href="#buttonControler">buttonControler</a>
+ &#8226;   <a href="#buttonControler.py">buttonControler.py</a>
+ &#8226;   <a href="#camera">camera</a>
  &#8226;   <a href="#camera.py">camera.py</a>
  &#8226;   <a href="#inputControler">inputControler</a>
  &#8226;   <a href="#inputControler.py">inputControler.py</a>
@@ -20371,6 +20416,8 @@ imported by:
  &#8226;   <a href="#asyncio.windows_utils">asyncio.windows_utils</a>
  &#8226;   <a href="#base64">base64</a>
  &#8226;   <a href="#bdb">bdb</a>
+ &#8226;   <a href="#buttonControler">buttonControler</a>
+ &#8226;   <a href="#buttonControler.py">buttonControler.py</a>
  &#8226;   <a href="#calendar">calendar</a>
  &#8226;   <a href="#cmd">cmd</a>
  &#8226;   <a href="#code">code</a>
@@ -21657,14 +21704,15 @@ imported by:
   <a target="code" href="///C:/Users/david/OneDrive/Dokument/GitHub/level-desinger-4/utils.py" type="text/plain"><tt>utils</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#pygame">pygame</a>
+    <a href="#os">os</a>
+ &#8226;   <a href="#pygame">pygame</a>
  &#8226;   <a href="#screeninfo">screeninfo</a>
 
   </div>
   <div class="import">
 imported by:
-    <a href="#camera">camera</a>
- &#8226;   <a href="#camera.py">camera.py</a>
+    <a href="#buttonControler">buttonControler</a>
+ &#8226;   <a href="#buttonControler.py">buttonControler.py</a>
  &#8226;   <a href="#levelhandler">levelhandler</a>
  &#8226;   <a href="#levelhandler.py">levelhandler.py</a>
  &#8226;   <a href="#main.py">main.py</a>

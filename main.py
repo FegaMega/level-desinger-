@@ -23,18 +23,18 @@ def ArrayOfStrToInt(str):
 
 class designer:
     def __init__(self):
+        self.u = utils.utils()
         self.music_lib = ["data/music/Cipher_BGM.flac", "data/music/Aloft_BGM.flac", "data/music/lemmino-nocturnal.flac"]
         self.m = mixer(self.music_lib)
-        self.user = camera.camera()
+        self.user = camera.camera(self.u)
         self.jh = JsonHandler()
-        self.u = utils.utils()
-        self.sh = settingsfolder.settingshandeler()
+        self.sh = settingsfolder.settingshandeler(self.u)
         self.iC = inputControler
         self.lh = levelhandler.levelhandeler("data/json/level.json")
         self.r = True
         self.scroll = [0, 0]
         self.cubes = []
-        self.buttons = [button([self.u.screenSize[0]-20-184, 20], [184, 22], "data/img/object2.png", "object")]
+        self.buttons = [button([self.u.screenSize[0]-20-184, 20], [184, 44], "data/img/object2.png", "object"), button([self.u.screenSize[0]-20-184, 84], [184, 44], "data/img/speed.png", "speed")]
         self.lh.objectReader(self.cubes)
         self.mousePos = [0, 0]
         self.draging = [False, 0]
@@ -86,7 +86,7 @@ class designer:
             i.draw(self.rANDwScroll)
     def drawButtons(self):
         for button in self.buttons:
-            button.draw(self.u.rANDwScreen)
+            button.draw(self.u.rANDwScreen, self.u.rANDwScreenSize)
     def drawMisc(self):
         for i in self.VisualMisc:
             i.draw(self.rANDwScroll)
