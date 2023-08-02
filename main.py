@@ -1,10 +1,12 @@
-import pygame, json, sys, utils, collision, objects, camera
-from utils import main
+import pygame, sys
+import json, utils, collision, objects, camera
 from pygame.locals import *
 from JH import JsonHandler
 import settingsfolder
 import inputControler
-
+import levelhandler
+from music import mixer
+from buttonControler import button
 
 
 
@@ -21,23 +23,82 @@ def ArrayOfStrToInt(str):
 
 class designer:
     def __init__(self):
-        self.user = camera.camera()
+        self.u = utils.utils()
+        self.music_lib = ["data/music/Cipher_BGM.flac", "data/music/Aloft_BGM.flac", "data/music/lemmino-nocturnal.flac"]
+        self.m = mixer(self.music_lib)
+        self.user = camera.camera(self.u)
         self.jh = JsonHandler()
-        self.u = utils.main()
-        self.sh = settingsfolder.settingshandeler()
+        self.sh = settingsfolder.settingshandeler(self.u)
         self.iC = inputControler
+        self.lh = levelhandler.levelhandeler("data/json/level.json")
         self.r = True
         self.scroll = [0, 0]
-        self.cubes = [objects.cube(self.u.screenSize[0]/2, self.u.screenSize[1]/2, 50, 50)]
+        self.cubes = []
+        self.buttons = [button([self.u.screenSize[0]-20-184, 20], [184, 44], "data/img/object2.png", "object"), button([self.u.screenSize[0]-20-184, 84], [184, 44], "data/img/speed.png", "speed")]
+        self.lh.objectReader(self.cubes)
         self.mousePos = [0, 0]
+        self.draging = [False, 0]
+        self.moving = False
+        self.VisualMisc = []
+        self.holding_newCube = False
+    def rANDwMoving(self, moving, rORw:str):
+        if rORw == "w":
+            self.moving = moving
+        elif rORw == "r":
+            return self.moving
+    def rANDwHolding_newCube(self, holding_newCube, rORw:str):
+        if rORw == "w":
+            self.holding_newCube = holding_newCube
+        elif rORw == "r":
+            return self.holding_newCube
+    def rANDwMousePos(self, mousePos, rORw:str):
+        if rORw == "w":
+            self.mousePos = mousePos
+        elif rORw == "r":
+            return self.mousePos
+    def rANDwDraging(self, draging, rORw:str):
+        if rORw == "w":
+            self.draging = draging
+        elif rORw == "r":
+            return self.draging
+    def rANDwScroll(self, scroll, rORw:str):
+        if rORw == "w":
+            self.scroll = scroll
+        elif rORw == "r":
+            return self.scroll
+    def rANDwCubes(self, cubes, rORw:str):
+        if rORw == "w":
+            self.cubes = cubes
+        elif rORw == "r":
+            return self.cubes
+    def rANDwButtons(self, button, rORw:str):
+        if rORw == "w":
+            self.buttons = button
+        elif rORw == "r":
+            return self.buttons
+    def rANDwVisualMisc(self, VisualMisc, rORw:str):
+        if rORw == "w":
+            self.VisualMisc = VisualMisc
+        elif rORw == "r":
+            return self.VisualMisc
     def drawCubes(self):
         for i in self.cubes:
-            i.draw(self.scroll)
+            i.draw(self.rANDwScroll)
+    def drawButtons(self):
+        for button in self.buttons:
+            button.draw(self.u.rANDwScreen, self.u.rANDwScreenSize)
+    def drawMisc(self):
+        for i in self.VisualMisc:
+            i.draw(self.rANDwScroll)
     def mousePosUpdate(self):
+        mouse = self.u.rANDwMouse(0, "r")
+        mouse[mouse.index("MOUSE")+1][0] = pygame.mouse.get_pos()
+        self.u.rANDwMouse(mouse, "w")
         return pygame.mouse.get_pos()
     def scrollFunc(self):
         self.scroll[0] += (self.user.pos[0] + self.user.size[0]/2 - self.scroll[0] - self.u.screenSize[0] / 2) / 10
         self.scroll[1] += (self.user.pos[1] + self.user.size[0]/2 - self.scroll[1] - self.u.screenSize[1] / 2) / 10
+
     
 
 def main() -> int:
@@ -48,25 +109,31 @@ def main() -> int:
 
     while app.r == True:
         app.mousePos = app.mousePosUpdate()
-        app.u.screen.fill((146, 244, 255))
-        # Töm event kön
+        app.u.screen.fill((146, 244, 255)) # Dubbelbuffer (ej visad bild)
+        #Updaterar mus positionen
+        app.mousePos = app.mousePosUpdate()
+        # Töm (hantera) eventkön
         for event in pygame.event.get():
-            # Quit kod
+            # Avsluta kod
             if event.type == QUIT:
                 app.r = False
-            app.iC.inputSaver(event, app.u.Key)
-        app.iC.inputHandler(app.user, app.u.Key)
+            else:
+                app.iC.inputSaver(event, app.u.rANDwKey, app.u.rANDwMouse)
+        app.iC.inputHandler(app)
             
-        #Ritar object
+        # Ritar object
         app.drawCubes()
         app.user.move()
         app.scrollFunc()
+        app.drawButtons()
+        #spelar musik
+        #app.m.RunMusic()
         # uppdaterar skärmen
         pygame.display.update()
-        #Updaterar mus positionen
-        print(app.user.speed)
-        # 60 Fps limmit
+
+        # 60 Fps limit
         pygame.time.Clock().tick(60)
+    app.lh.objectWriter(app.cubes)
     return 0
 
 
