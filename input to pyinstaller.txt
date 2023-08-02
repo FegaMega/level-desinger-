@@ -1,5 +1,3 @@
 cd C:\Users\david\OneDrive\Dokument\GitHub\level-desinger-4
 
-pyinstaller main.py --onefile --noconsole
-
-pyinstaller main.py camera.py buttonControler.py collision.py inputControler.py JH.py levelhandler.py music.py objects.py settingsfolder.py utils.py --onefile --noconsole
+pyinstaller desinger.py camera.py buttonControler.py collision.py inputControler.py JH.py levelhandler.py music.py objects.py settingsfolder.py utils.py --onefile --noconsole

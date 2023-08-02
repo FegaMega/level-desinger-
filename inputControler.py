@@ -1,4 +1,4 @@
-import pygame, objects, collision
+import pygame, objects, collision, speed
 from pygame.locals import *
 
 YACCELERATION = .1
@@ -114,7 +114,7 @@ def SPAWNSPEED(rANDwCubes, rANDwMouse, rANDwscroll, rANDwHolding_newCube, LH, BU
     holding_newCube = rANDwHolding_newCube(0, "r")
     BOK = BUTTONORKEYBOARD
     if holding_newCube == False:
-        Cubes.append(objects.cube(mouse[0] + scroll[0], mouse[1] + scroll[1], 50, 50, (0, 255, 0)))
+        Cubes.append(speed.speed(mouse[0] + scroll[0], mouse[1] + scroll[1], 50, 50, (0, 255, 0)))
         Cubes[len(Cubes)-1].extra_info = ["holding", str(BOK)]
         holding_newCube = True
         LH.objectWriter(Cubes)
@@ -239,48 +239,50 @@ def eventDRAGYSIZEONCUBE(rANDwCubes, utils, rANDwscroll, rANDwMoving, rANDwDragi
     outputDD = 0
     outputDDG = 0
     for cube in Cubes:
-        extra_info = cube.rANDwExtra_info(0, "r")
+        print(cube.__class__)
+        if cube.__class__ != "__speed__":
+            extra_info = cube.rANDwExtra_info(0, "r")
 
-        try:
-            outputDDG = extra_info.index("drawDownGreen")+1
-        except:
-            ValueError
-            TypeError
-            extra_info.append("drawDownGreen")
-            extra_info.append(False)
-            outputDDG = extra_info.index("drawDownGreen")+1
-        try:            
-            outputDD = extra_info.index("dragDown")+1
-        except:
-            ValueError
-            TypeError
-            extra_info.append("dragDown")
-            extra_info.append(False)
-            outputDD = extra_info.index("dragDown")+1
-            
-        if True == collision.mouseCollision(mouse[0] + scroll[0], mouse[1] + scroll[1], cube.pos[0], cube.pos[1] + cube.size[1] - utils.tolerance, cube.size[0], utils.tolerance) and moving == False:
-            if draging[0] == False or draging[0] == True and draging[1] == cube:
-                extra_info[outputDDG] = True
-                if mouseLeft[0] == True:
-                    extra_info[outputDD] = True
-                    draging[0] = True 
-                    draging[1] = cube
+            try:
+                outputDDG = extra_info.index("drawDownGreen")+1
+            except:
+                ValueError
+                TypeError
+                extra_info.append("drawDownGreen")
+                extra_info.append(False)
+                outputDDG = extra_info.index("drawDownGreen")+1
+            try:            
+                outputDD = extra_info.index("dragDown")+1
+            except:
+                ValueError
+                TypeError
+                extra_info.append("dragDown")
+                extra_info.append(False)
+                outputDD = extra_info.index("dragDown")+1
 
-        if mouseLeft[0] == False:
-            extra_info[outputDD] = False
-            draging[0] = False
-            draging[1] = 0
-            if False == collision.mouseCollision(mouse[0] + scroll[0], mouse[1] + scroll[1], cube.pos[0], cube.pos[1] + cube.size[1] - utils.tolerance, cube.size[0], utils.tolerance):
-                extra_info[outputDDG] = False
+            if True == collision.mouseCollision(mouse[0] + scroll[0], mouse[1] + scroll[1], cube.pos[0], cube.pos[1] + cube.size[1] - utils.tolerance, cube.size[0], utils.tolerance) and moving == False:
+                if draging[0] == False or draging[0] == True and draging[1] == cube:
+                    extra_info[outputDDG] = True
+                    if mouseLeft[0] == True:
+                        extra_info[outputDD] = True
+                        draging[0] = True 
+                        draging[1] = cube
+
+            if mouseLeft[0] == False:
+                extra_info[outputDD] = False
+                draging[0] = False
+                draging[1] = 0
+                if False == collision.mouseCollision(mouse[0] + scroll[0], mouse[1] + scroll[1], cube.pos[0], cube.pos[1] + cube.size[1] - utils.tolerance, cube.size[0], utils.tolerance):
+                    extra_info[outputDDG] = False
 
 
-        if extra_info[outputDD] == True:
-            cube.size[1] = mouse[1] + scroll[1] - cube.pos[1]
-            if cube.size[1] < utils.tolerance:
-                cube.size[1] = utils.tolerance
-        cube.rANDwExtra_info(extra_info, "w")
-    rANDwDraging(draging, "w")
-    rANDwMoving(moving, "w")
+            if extra_info[outputDD] == True:
+                cube.size[1] = mouse[1] + scroll[1] - cube.pos[1]
+                if cube.size[1] < utils.tolerance:
+                    cube.size[1] = utils.tolerance
+            cube.rANDwExtra_info(extra_info, "w")
+        rANDwDraging(draging, "w")
+        rANDwMoving(moving, "w")
         
 def eventMOVECUBE(rANDwCubes, utils, rANDwscroll, rANDwMoving, rANDwDraging):
     Cubes = rANDwCubes(0, "r")
