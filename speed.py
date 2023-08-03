@@ -4,7 +4,7 @@ U = utils.utils()
 
 class speed:
     def __init__(self, x, y, xsize, ysize, color):
-        self.extra_info = "collecteble"
+        self.extra_info = ["collecteble"]
         self.pos = [x, y]
         self.size = [xsize, ysize]
         self.color = color

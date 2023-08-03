@@ -55,7 +55,9 @@ class utils:
         self.Mouse = [
             "MOUSELEFT", [False, 1],           
             "MOUSERIGHT", [False, 3],
-            "MOUSE", [[0, 0], [0, 0]]#[str, pos, oldpos]
+            "MOUSE", [[0, 0], [0, 0]], #[str, pos, oldpos]
+            "MOUSESCROLLUP", [False, 4],
+            "MOUSESCROLLDOWN", [False, 5]
             ] 
     def rANDwMouse(self, Mouse, rORw:str):
         if rORw == "w":

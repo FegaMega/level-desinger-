@@ -34,7 +34,7 @@ class designer:
         self.r = True
         self.scroll = [0, 0]
         self.cubes = []
-        self.buttons = [button([self.u.screenSize[0]-20-184, 20], [184, 44], "data/img/object2.png", "object"), button([self.u.screenSize[0]-20-184, 84], [184, 44], "data/img/speed.png", "speed")]
+        self.buttons = [button([self.u.screenSize[0]-20, 20], [184, 44], "data/img/object2.png", "object", 0), button([self.u.screenSize[0]-20, 20], [184, 44], "data/img/speed.png", "speed", 1)]
         self.lh.objectReader(self.cubes)
         self.mousePos = [0, 0]
         self.draging = [False, 0]
@@ -127,7 +127,7 @@ def main() -> int:
         app.scrollFunc()
         app.drawButtons()
         #spelar musik
-        #app.m.RunMusic()
+        app.m.RunMusic()
         # uppdaterar skärmen
         pygame.display.update()
 

@@ -146,7 +146,6 @@ def spawnCubeHandling(rANDwCubes, rANDwMouse, rANDwscroll, rANDwHolding_newCube)
                 cube.pos[0] = round(mouse[0] + scroll[0] - (cube.size[0] /2))
                 cube.pos[1] = round(mouse[1] + scroll[1] - (cube.size[1] /2))
                 CurrentBOK = cube.extra_info[cube.extra_info.index("holding")+1]
-                print(CurrentBOK)
                 if MouseLeft[0] == True and CurrentBOK == "KEYBOARD" or MouseLeft[0] == False and CurrentBOK == "BUTTON":
                     del cube.extra_info[info.index("holding")+1]
                     del cube.extra_info[info.index("holding")]
@@ -154,13 +153,14 @@ def spawnCubeHandling(rANDwCubes, rANDwMouse, rANDwscroll, rANDwHolding_newCube)
                     rANDwHolding_newCube(holding_newCube, "w")
                     
 
-def eventDELETECUBE(rANDwCubes, rANDwscroll, utils, LH, rANDwMoving, rANDwDraging):
+def eventDELETECUBE(rANDwCubes, rANDwscroll, utils, LH, rANDwMoving, rANDwDraging, rANDwHolding_newCube):
     Cubes = rANDwCubes(0, "r")
     Mouse = utils.rANDwMouse(0, "r")
     mouse = Mouse[Mouse.index("MOUSE")+1][0]
     scroll = rANDwscroll(0, "r")
     moving = rANDwMoving(0, "r")
     draging = rANDwDraging(0, "r")
+    holding_newCube = rANDwHolding_newCube(0, "r")
     Key = utils.rANDwKey(0, "r")
     Del = Key[Key.index("DEL")+1]
     i = 0
@@ -169,9 +169,11 @@ def eventDELETECUBE(rANDwCubes, rANDwscroll, utils, LH, rANDwMoving, rANDwDragin
             del Cubes[i]
             moving = False
             draging = [0, 0]
+            holding_newCube = False
             LH.objectWriter(Cubes)
             rANDwMoving(moving, "w")
             rANDwDraging(draging, "w")
+            rANDwHolding_newCube(holding_newCube, "w")
         i += 1 
 
 
@@ -349,6 +351,8 @@ def inputSaver(event, rANDwKey, rANDwMouse):
     MouseLeft = Mouse[Mouse.index("MOUSELEFT")+1]
     MouseRight = Mouse[Mouse.index("MOUSERIGHT")+1]
     MouseVar = Mouse[Mouse.index("MOUSE")+1]
+    MouseSrollDown = Mouse[Mouse.index("MOUSESCROLLDOWN")+1]
+    MouseSrollUp = Mouse[Mouse.index("MOUSESCROLLUP")+1]
     if event.type == pygame.MOUSEBUTTONDOWN:
         if event.button == 1:
             MouseLeft[0] = True
@@ -356,12 +360,19 @@ def inputSaver(event, rANDwKey, rANDwMouse):
         if event.button == 3:
             MouseRight[0] = True
             MouseVar[1] = pygame.mouse.get_pos()
-
+        if event.button == 4:
+            MouseSrollUp[0] = True
+        if event.button == 5:
+            MouseSrollDown[0] = True
     if event.type == pygame.MOUSEBUTTONUP:
         if event.button == 1:
             MouseLeft[0] = False
         if event.button == 3:
             MouseRight[0] = False
+        if event.button == 4:
+            MouseSrollUp[0] = False
+        if event.button == 5:
+            MouseSrollDown[0] = False
     rANDwMouse(Mouse, "w") 
 
 
@@ -372,7 +383,7 @@ def inputHandler(app):
     eventRIGHT(app.u.rANDwKey, app.user.rANDwSpeed)
     eventMOVEWITHMOUSE(app.user.rANDwPos, app.u.rANDwMouse) 
     eventSPAWNCUBE(app.rANDwCubes, app.u.rANDwMouse, app.u.rANDwKey, app.rANDwScroll, app.rANDwHolding_newCube, app.lh)
-    eventDELETECUBE(app.rANDwCubes, app.rANDwScroll, app.u, app.lh, app.rANDwMoving, app.rANDwDraging)
+    eventDELETECUBE(app.rANDwCubes, app.rANDwScroll, app.u, app.lh, app.rANDwMoving, app.rANDwDraging, app.rANDwHolding_newCube)
     eventDRAGXSIZEONCUBE(app.rANDwCubes, app.u, app.rANDwScroll, app.rANDwMoving, app.rANDwDraging, app.rANDwVisualMisc)
     eventDRAGYSIZEONCUBE(app.rANDwCubes, app.u, app.rANDwScroll, app.rANDwMoving, app.rANDwDraging)
     eventMOVECUBE(app.rANDwCubes, app.u, app.rANDwScroll, app.rANDwMoving, app.rANDwDraging)
