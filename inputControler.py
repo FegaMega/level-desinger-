@@ -163,9 +163,10 @@ def eventDELETECUBE(rANDwCubes, rANDwscroll, utils, LH, rANDwMoving, rANDwDragin
     holding_newCube = rANDwHolding_newCube(0, "r")
     Key = utils.rANDwKey(0, "r")
     Del = Key[Key.index("DEL")+1]
+    D = Key[Key.index("D")+1]
     i = 0
     for cube in Cubes:
-        if collision.mouseCollision(mouse[0] + scroll[0], mouse[1] + scroll[1], cube.pos[0], cube.pos[1], cube.size[0], cube.size[1]) and Del[0] == True:
+        if collision.mouseCollision(mouse[0] + scroll[0], mouse[1] + scroll[1], cube.pos[0], cube.pos[1], cube.size[0], cube.size[1]) and (Del[0] == True or D[0] == True):
             del Cubes[i]
             moving = False
             draging = [0, 0]
