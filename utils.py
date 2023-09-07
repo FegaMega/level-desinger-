@@ -50,7 +50,8 @@ class utils:
             "LEFT", [False, pygame.K_LEFT],     
             "DOWN", [False, pygame.K_DOWN],     
             "RIGHT", [False, pygame.K_RIGHT],
-            "DEL", [False, pygame.K_DELETE]   
+            "DEL", [False, pygame.K_DELETE],   
+            "SPACE", [False, pygame.K_SPACE, False]
         ]
         self.Mouse = [
             "MOUSELEFT", [False, 1],           
@@ -84,3 +85,7 @@ class utils:
         y=100
         os.environ['SDL_VIDEO_WINDOW_POS'] = '%d,%d' % (x,y)
         self.screen = pygame.display.set_mode(self.screenSize, vsync=1)
+    def rot_center(image, rect, angle):
+        rot_image = pygame.transform.rotate(image, angle)
+        rot_rect = rot_image.get_rect(center=rect.center)
+        return rot_image,rot_rect
