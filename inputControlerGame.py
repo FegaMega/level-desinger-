@@ -23,9 +23,9 @@ def inputSaver(event, rANDwKey, rANDwMouse):
             if key.__class__ == list:
                 if key == "SPACE":
                     if Key[Key.index(key)+1][0] == False:
-                        Key[Key.index(key)+1][2] = False
+                        Key[Key.index(key)+1][2] = 0
                     else:
-                        Key[Key.index(key)+1][2] = True
+                        Key[Key.index(key)+1][2] += 1
                 if event.key == key[1]:
                         key[0] = True
             
@@ -108,7 +108,7 @@ def eventSHOOTGUN(rANDwKey, gun, rANDwBullets):
     Key = rANDwKey(0, "r") 
     SPACE = Key[Key.index("SPACE")+1]
     bullets = rANDwBullets(0, "r")    
-    if SPACE[0] == True:
+    if SPACE[0] == True and SPACE[2]%60 == 0:
         bullets.append(bullet(gun.pos[0], gun.pos[1] + 3, 5, gun.angle))
 
 def eventsMOVING(rANDwKey, player):

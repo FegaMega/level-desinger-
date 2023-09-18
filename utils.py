@@ -51,7 +51,7 @@ class utils:
             "DOWN", [False, pygame.K_DOWN],     
             "RIGHT", [False, pygame.K_RIGHT],
             "DEL", [False, pygame.K_DELETE],   
-            "SPACE", [False, pygame.K_SPACE, False]
+            "SPACE", [False, pygame.K_SPACE, 0]
         ]
         self.Mouse = [
             "MOUSELEFT", [False, 1],           
