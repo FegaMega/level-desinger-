@@ -68,17 +68,17 @@ class Game:
         else:
             # Gravitation
             # säger att spelaren inte är på golvet
-            self.player.yspeed += 0.4 / 60
+            self.player.speed[1] += 0.4 / 60
             self.player.on_floor = False
 
             
     def portalKollision(self,object):
-        if self.c.rectCollision(object.posR[0], object.posR[1], object.sizeR[0], object.sizeR[1], self.player.pos[0], self.player.pos[1], self.player.xsize, self.player.ysize):
+        if self.c.rectCollision(object.posR[0], object.posR[1], object.sizeR[0], object.sizeR[1], self.player.pos[0], self.player.pos[1], self.player.size[0], self.player.size[1]):
             if self.TPallow == True:
                 self.player.pos[0] = object.posB[0]
                 self.player.pos[1] = object.posB[1]
                 self.TPallow = False
-        elif self.c.rectCollision(object.posB[0], object.posB[1], object.sizeB[0], object.sizeB[1], self.player.pos[0], self.player.pos[1], self.player.xsize, self.player.ysize):
+        elif self.c.rectCollision(object.posB[0], object.posB[1], object.sizeB[0], object.sizeB[1], self.player.pos[0], self.player.pos[1], self.player.size[0], self.player.size[1]):
             if self.TPallow == True:
                 self.player.pos[0] = object.posR[0]
                 self.player.pos[1] = object.posR[1]
@@ -93,12 +93,12 @@ class Game:
         if object.__class__ == extra_jump:
             self.player.max_jumps += 1
             # tar bort extra_jump saken
-            self.Level1.remove(object)
+            self.Level.remove(object)
         # Kollar om det är en extra_jump
         if object.__class__ == speed:
-            self.player.speed += .1
+            self.player.max_speed += .1
             # tar bort extra_jump saken
-            self.Level1.remove(object)
+            self.Level.remove(object)
     
 
 
@@ -114,7 +114,7 @@ class Game:
             self.player.in_tunnel = True
         if self.player.in_tunnel == False:
             if line[4] == "down":
-                self.player.pos[1] = object.pos[1] - self.player.ysize
+                self.player.pos[1] = object.pos[1] - self.player.size[1]
                 self.player.yspeed = 0
                 self.player.on_floor = True
             elif line[4] == "up":
@@ -126,13 +126,13 @@ class Game:
     def vanligaObjektsKollision(self, line, object):
         self.player.in_tunnel = False
         if line[4] == "right":
-            self.player.pos[0] = object.pos[0] - self.player.xsize
+            self.player.pos[0] = object.pos[0] - self.player.size[0]
             self.player.xspeed = 0
         elif line[4] == "left":
             self.player.pos[0] = object.pos[0] + object.size[0]
             self.player.xspeed = 0
         elif line[4] == "down":
-            self.player.pos[1] = object.pos[1] - self.player.ysize
+            self.player.pos[1] = object.pos[1] - self.player.size[1]
             self.player.yspeed = 0
             self.player.on_floor = True
         elif line[4] == "up":
@@ -149,6 +149,9 @@ class Game:
                     self.vanligaObjektsKollision(line, object)
                 else:
                     self.TunnelKollision(line, object)
+                if line[4] == "down":
+                    self.player.speed[1] = 0
+                    self.player.on_floor = True
 
 
 
@@ -207,15 +210,15 @@ class Game:
 
 
     def bulletPortalKollision(self, Object, Bullet):
-        if self.c.rectCollision(Bullet.posB[0], Bullet.posB[1], Bullet.sizeB[0], Bullet.sizeB[1], Bullet.pos[0], Bullet.pos[1], Bullet.size[0], Bullet.size[1]) == True:
+        if self.c.rectCollision(Object.xB, Object.yB, Object.xsizeB, Object.ysizeB, Bullet.pos[0], Bullet.pos[1], Bullet.size[0], Bullet.size[1]) == True:
             if Bullet.TPallow == True:
-                Bullet.pos[0] = Bullet.posR[0] + (Bullet.posB[0] - Bullet.pos[0])
-                Bullet.pos[1] = Bullet.posR[1] + (Bullet.posB[1] - Bullet.pos[1])
+                Bullet.pos[0] = Object.xR + (Object.xB - Bullet.pos[0])
+                Bullet.pos[1] = Object.yR + (Object.yB - Bullet.pos[1])
                 Bullet.TPallow = False
-        elif self.c.rectCollision(Bullet.posR[0], Bullet.posR[1], Bullet.sizeR[0], Bullet.sizeR[1], Bullet.pos[0], Bullet.pos[1], Bullet.size[0], Bullet.size[1]) == True:
+        elif self.c.rectCollision(Object.xR, Object.yR, Object.xsizeR, Object.ysizeR, Bullet.pos[0], Bullet.pos[1], Bullet.size[0], Bullet.size[1]) == True:
             if Bullet.TPallow == True:
-                Bullet.pos[0] = Bullet.posB[0] + (Bullet.posR[0] - Bullet.pos[0])
-                Bullet.pos[1] = Bullet.posB[1] + (Bullet.posR[1] - Bullet.pos[1])
+                Bullet.pos[0] = Object.xB + (Object.xR - Bullet.pos[0])
+                Bullet.pos[1] = Object.yB + (Object.yR - Bullet.pos[1])
 
                 Bullet.TPallow = False
         else:
@@ -230,9 +233,9 @@ class Game:
 
 
     def bulletCollectebleKollision(self, Object, Bullet):
-        if self.c.rectCollision(Object.pos[0], Object.pos[1], Bullet.size[0], Bullet.size[1], Bullet.pos[0], Bullet.pos[1], Bullet.size[0], Bullet.size[1]) == True:
+        if self.c.rectCollision(Object.pos[0], Object.pos[1], Object.size[0], Object.size[1], Bullet.pos[0], Bullet.pos[1], Bullet.size[0], Bullet.size[1]) == True:
             self.collektebleCollekted(Object)
-            self.Level1.remove(Object)
+            self.Level.remove(Object)
 
 
 
@@ -258,7 +261,7 @@ class Game:
             Bullet.move()
             for Object in self.Level:
                 self.bulletKollision(Object, Bullet)
-            Bullet.draw(self.u.screen, self.scroll[0], self.scroll[1])
+            Bullet.draw(self.u.screen, self.rANDwScroll)
             # kollar om skotten är gamla
             self.bulletÅlderCheck(Bullet)
 

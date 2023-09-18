@@ -71,41 +71,38 @@ def eventMOVELEFT(rANDwKey, player):
     Key = rANDwKey(0, "r") 
     A = Key[Key.index("A")+1]
     if A[0] == True:
-        player.ml == True
+        player.ml = True
     else:
-        player.ml == False
+        player.ml = False
 
 def eventMOVEUP(rANDwKey, player):
     Key = rANDwKey(0, "r") 
     W = Key[Key.index("W")+1]
     if W[0] == True:
-        player.mu == True
+        player.mu = True
     else:
-        player.mu == False
+        player.mu = False
 
 def eventMOVERIGHT(rANDwKey, player):
     Key = rANDwKey(0, "r") 
     D = Key[Key.index("D")+1]
     if D[0] == True:
-        player.mr == True
+        player.mr = True
     else:
-        player.mr == False
+        player.mr = False
 
-def eventROTATEGUNLEFT(rANDwKey, gun):
+def eventROTATEGUN(rANDwKey, gun):
     Key = rANDwKey(0, "r") 
     LEFT = Key[Key.index("LEFT")+1]
+    RIGHT = Key[Key.index("RIGHT")+1]
     if LEFT[0] == True:
         gun.change_angle = 10
+    elif RIGHT[0] == True:
+            gun.change_angle = -10
     else:
-        gun.chage_angle = 0
-
-def eventROTATEGUNRIGHT(rANDwKey, gun):
-    Key = rANDwKey(0, "r") 
-    RIGHT = Key[Key.index("RIGHT")+1]
-    if RIGHT[0] == True:
-        gun.change_angle = -10
-    else:
-        gun.chage_angle = 0
+        gun.change_angle = 0
+    
+    
 
 def eventSHOOTGUN(rANDwKey, gun, rANDwBullets):
     Key = rANDwKey(0, "r") 
@@ -120,8 +117,7 @@ def eventsMOVING(rANDwKey, player):
     eventMOVEUP(rANDwKey, player)      
 
 def eventsGUN(rANDwKey, gun, rANDwBullets):
-    eventROTATEGUNLEFT(rANDwKey, gun)
-    eventROTATEGUNRIGHT(rANDwKey, gun)
+    eventROTATEGUN(rANDwKey, gun)
     eventSHOOTGUN(rANDwKey, gun, rANDwBullets)
 
 

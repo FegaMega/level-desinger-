@@ -23,9 +23,9 @@ class Player:
         pygame.draw.rect(screen, (0, 255, 0), playe)
     def movement(self):
         if self.ml:
-            self.speed[0] = (-4/10) * self.speed[0]
+            self.speed[0] = (-4/10) * self.max_speed
         if self.mr:
-            self.speed[0] = (4/10) * self.speed[0]
+            self.speed[0] = (4/10) * self.max_speed
         if self.mr == self.ml:
             self.speed[0] = 0.0 
         if self.mu == True:
