@@ -40,8 +40,8 @@ class Game:
     def scrollFunc(self):
         self.scroll[0] += (self.player.pos[0] - self.scroll[0] - self.u.screenSize[0] / 2) / 10
         self.scroll[1] += (self.player.pos[1] - self.scroll[1] - self.u.screenSize[1] / 2) / 10
-        if self.scroll[1] > 0:
-            self.scroll[1] = 0
+#        if self.scroll[1] > 0:
+#           self.scroll[1] = 0
 
     def rANDwScroll(self, scroll, rORw:str):
         if rORw == "w":
@@ -150,9 +150,12 @@ class Game:
                 else:
                     self.TunnelKollision(line, object)
                 if line[4] == "down":
-                    self.player.speed[1] = 0
+                    if self.player.speed[1] > 0:
+                        self.player.speed[1] = 0
                     self.player.on_floor = True
-
+                if line[4] == "up":
+                    if self.player.speed[1] < 0:
+                        self.player.speed[1] = 0
 
 
 
@@ -198,8 +201,8 @@ class Game:
 
     def centreraPistol(self):
         # flyttar vapnet till spelaren
-        self.gun.x = self.player.pos[0] + 10
-        self.gun.y = self.player.pos[1] + 20
+        self.gun.pos[0] = self.player.pos[0] + 10
+        self.gun.pos[1] = self.player.pos[1] + 20
         
 
 
