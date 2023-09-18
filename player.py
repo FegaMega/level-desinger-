@@ -13,7 +13,7 @@ class Player:
         self.jumps = 0
         self.TPallow: bool = True
         self.on_floor: bool = False
-        self.max_jumps = 1
+        self.max_jumps = 2
         self.max_speed = 1
         self.in_tunnel = False
         self.hitbox: bool = [True, True]
@@ -28,8 +28,9 @@ class Player:
             self.speed[0] = (4/10) * self.max_speed
         if self.mr == self.ml:
             self.speed[0] = 0.0 
-        if self.mu == True:
+        if self.mu == True and self.jumps > 0:
             self.speed[1]= -15/10
+            self.jumps -= 1
         self.pos[0]+= self.speed[0]
         self.pos[1]+= self.speed[1]
         self.bottom:float = self.pos[1]+ self.size[1]

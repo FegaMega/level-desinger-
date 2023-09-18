@@ -18,25 +18,20 @@ def inputSaver(event, rANDwKey, rANDwMouse):
     
     
     #Keyboard saver
-    if event.type == pygame.KEYDOWN: 
-        for key in Key:
+    for key in Key:
+        if event.type == pygame.KEYDOWN: 
             if key.__class__ == list:
-                if key == "SPACE":
-                    if Key[Key.index(key)+1][0] == False:
-                        Key[Key.index(key)+1][2] = 0
-                    else:
-                        Key[Key.index(key)+1][2] += 1
                 if event.key == key[1]:
                         key[0] = True
-            
-
-    if event.type == pygame.KEYUP:     
-        for key in Key:
+        if event.type == pygame.KEYUP:     
             if key.__class__ == list:
                 if event.key == key[1]:
                     key[0] = False
-                if key == "SPACE":
-                    Key[Key.index(key)+1][2] = False
+        if key.__class__ == list:
+            if key[0] == True:
+                key[2] += 1
+            else:
+                key[2] = 0
     rANDwKey(Key, "w")
 
     #mouse saver
@@ -78,7 +73,7 @@ def eventMOVELEFT(rANDwKey, player):
 def eventMOVEUP(rANDwKey, player):
     Key = rANDwKey(0, "r") 
     W = Key[Key.index("W")+1]
-    if W[0] == True:
+    if W[0] == True and W[2] == 1:
         player.mu = True
     else:
         player.mu = False
@@ -108,7 +103,7 @@ def eventSHOOTGUN(rANDwKey, gun, rANDwBullets):
     Key = rANDwKey(0, "r") 
     SPACE = Key[Key.index("SPACE")+1]
     bullets = rANDwBullets(0, "r")    
-    if SPACE[0] == True and SPACE[2]%60 == 0:
+    if SPACE[0] == True and SPACE[2]%60 == 1:
         bullets.append(bullet(gun.pos[0], gun.pos[1] + 3, 5, gun.angle))
 
 def eventsMOVING(rANDwKey, player):

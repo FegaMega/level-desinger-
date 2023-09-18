@@ -342,6 +342,6 @@ def main() -> int:
         pygame.time.Clock().tick(60)
         
         # spelaren rör sig inte upp
-        game.player.mu = False
+        #         game.player.mu = False
     return 0
 sys.exit(main())
