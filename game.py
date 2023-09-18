@@ -207,15 +207,15 @@ class Game:
 
 
     def bulletPortalKollision(self, Object, Bullet):
-        if self.c.rectCollision(Object.xB, Object.yB, Object.xsizeB, Object.ysizeB, Bullet.x, Bullet.y, Bullet.xsize, Bullet.ysize) == True:
+        if self.c.rectCollision(Bullet.posB[0], Bullet.posB[1], Bullet.sizeB[0], Bullet.sizeB[1], Bullet.pos[0], Bullet.pos[1], Bullet.size[0], Bullet.size[1]) == True:
             if Bullet.TPallow == True:
-                Bullet.x = Object.xR + (Object.xB - Bullet.x)
-                Bullet.y = Object.yR + (Object.yB - Bullet.y)
+                Bullet.pos[0] = Bullet.posR[0] + (Bullet.posB[0] - Bullet.pos[0])
+                Bullet.pos[1] = Bullet.posR[1] + (Bullet.posB[1] - Bullet.pos[1])
                 Bullet.TPallow = False
-        elif self.c.rectCollision(Object.xR, Object.yR, Object.xsizeR, Object.ysizeR, Bullet.x, Bullet.y, Bullet.xsize, Bullet.ysize) == True:
+        elif self.c.rectCollision(Bullet.posR[0], Bullet.posR[1], Bullet.sizeR[0], Bullet.sizeR[1], Bullet.pos[0], Bullet.pos[1], Bullet.size[0], Bullet.size[1]) == True:
             if Bullet.TPallow == True:
-                Bullet.x = Object.xB + (Object.xR - Bullet.x)
-                Bullet.y = Object.yB + (Object.yR - Bullet.y)
+                Bullet.pos[0] = Bullet.posB[0] + (Bullet.posR[0] - Bullet.pos[0])
+                Bullet.pos[1] = Bullet.posB[1] + (Bullet.posR[1] - Bullet.pos[1])
 
                 Bullet.TPallow = False
         else:
@@ -224,13 +224,13 @@ class Game:
 
 
     def bulletNormalKollision(self, Object, Bullet):
-        if self.c.rectCollision(Object.x, Object.y, Object.xsize, Object.ysize, Bullet.x, Bullet.y, Bullet.xsize, Bullet.ysize) == True:
+        if self.c.rectCollision(Object.pos[0], Object.pos[1], Object.size[0], Object.size[1], Bullet.pos[0], Bullet.pos[1], Bullet.size[0], Bullet.size[1]) == True:
             self.bullets.remove(Bullet)
 
 
 
     def bulletCollectebleKollision(self, Object, Bullet):
-        if self.c.rectCollision(Object.x, Object.y, Object.xsize, Object.ysize, Bullet.x, Bullet.y, Bullet.xsize, Bullet.ysize) == True:
+        if self.c.rectCollision(Object.pos[0], Object.pos[1], Bullet.size[0], Bullet.size[1], Bullet.pos[0], Bullet.pos[1], Bullet.size[0], Bullet.size[1]) == True:
             self.collektebleCollekted(Object)
             self.Level1.remove(Object)
 
@@ -256,7 +256,7 @@ class Game:
     def bulletKollisionLoop(self):
         for Bullet in self.bullets:
             Bullet.move()
-            for Object in self.Level1:
+            for Object in self.Level:
                 self.bulletKollision(Object, Bullet)
             Bullet.draw(self.u.screen, self.scroll[0], self.scroll[1])
             # kollar om skotten är gamla

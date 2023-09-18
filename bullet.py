@@ -3,14 +3,12 @@ from datetime import datetime, timedelta
 
 class bullet:
     def __init__(self, x, y, speed, angle):
-        self.x = x
-        self.y = y
+        self.pos = [x, y]
         self.speed: float = speed
         self.angle: float = angle
-        self.xsize = 6
-        self.ysize = 3
+        self.size = [6, 3]
         self.frames_drawn = 0
-        self.og_surf = pygame.transform.smoothscale(pygame.image.load("bullet.png").convert_alpha(), (self.xsize, self.ysize))
+        self.og_surf = pygame.transform.smoothscale(pygame.image.load("data/img/bullet.png").convert_alpha(), (self.xsize, self.ysize))
         self.surf = pygame.transform.rotate(self.og_surf, self.angle)
         self.rect = pygame.Rect(self.x, self.y, self.xsize, self.ysize)
         self.TPallow: bool = True
