@@ -310,7 +310,7 @@ def main() -> int:
         # flyttar vapnet till spelaren
         game.centreraPistol()
 
-        # ritar spelaren
+        # ritar spelaren och flyttar den
         game.ritaSpelare()
 
         # Kollar om skotten rör vid ett objekt och flyttar de fram
@@ -328,6 +328,10 @@ def main() -> int:
         # Skriver hur många hopp spelaren har kvar på skärmen
         jumps_left = game.FONT.render(("jumps: " + str(game.player.jumps) + "/" + str(game.player.max_jumps)), True, (0, 0, 0))
         game.u.screen.blit(jumps_left, (10, 10))
+    
+        jumps_left = game.FONT.render(("jumps: " + str(game.u.Key[3][2])), True, (0, 0, 0))
+        game.u.screen.blit(jumps_left, (10, 100))
+
         # Skriver hur snabb spelaren är på skärmen
         jumps_left = game.FONT.render(("speed: " + str(round(game.player.speed[0]*10, 1)/10) + "/" + str(round(game.player.max_speed*10, 1)/10)), True, (0, 0, 0))
         game.u.screen.blit(jumps_left, (10, 50))

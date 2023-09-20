@@ -13,12 +13,12 @@ def eventDOWN(rANDwKey, rANDwSpeed):
     Key = rANDwKey(0, "r")   
     S = Key[Key.index("S")+1]
     DOWN = Key[Key.index("DOWN")+1]
-    if S[0] == True or DOWN[0] == True:
+    if DOWN[0] == True:
         if speed[1] < YMAX:
             speed[1] += YACCELERATION
         if speed[1] > YMAX:
             speed[1] = YMAX
-    if S[0] == False and DOWN[0] == False: 
+    if DOWN[0] == False: 
         if speed[1] > 0:
             if speed[1] < YDECELERATION:
                 speed[1] = 0
@@ -29,14 +29,13 @@ def eventDOWN(rANDwKey, rANDwSpeed):
 def eventUP(rANDwKey, rANDwSpeed):
     speed = rANDwSpeed(0, "r")
     Key = rANDwKey(0, "r")   
-    W = Key[Key.index("W")+1]
     UP = Key[Key.index("UP")+1]
-    if W[0] == True or UP[0] == True:
+    if  UP[0] == True:
         if speed[1] > -YMAX:
             speed[1] -= YACCELERATION
         if speed[1] < -YMAX:
             speed[1] = -YMAX
-    if W[0] == False and UP[0] == False:
+    if UP[0] == False:
         if speed[1] < 0:
             if speed[1] > YDECELERATION:
                 speed[1] = 0
@@ -47,14 +46,13 @@ def eventUP(rANDwKey, rANDwSpeed):
 def eventLEFT(rANDwKey, rANDwSpeed):
     speed = rANDwSpeed(0, "r")
     Key = rANDwKey(0, "r")   
-    A = Key[Key.index("A")+1]
     LEFT = Key[Key.index("LEFT")+1]
-    if A[0] == True or LEFT[0] == True:
+    if LEFT[0] == True:
         if speed[0] > -XMAX:
             speed[0] -= XACCELERATION
         if speed[0] < -XMAX:
             speed[0] = -XMAX
-    if A[0] == False and LEFT[0] == False:
+    if LEFT[0] == False:
         if speed[0] < 0:
             if speed[0] > XDECELERATION:
                 speed[0] = 0
@@ -65,14 +63,13 @@ def eventLEFT(rANDwKey, rANDwSpeed):
 def eventRIGHT(rANDwKey, rANDwSpeed):
     speed = rANDwSpeed(0, "r")
     Key = rANDwKey(0, "r")   
-    D = Key[Key.index("D")+1]
     RIGHT = Key[Key.index("RIGHT")+1]
-    if D[0] == True or RIGHT[0] == True:
+    if RIGHT[0] == True:
         if speed[0] < XMAX:
             speed[0] += XACCELERATION
         if speed[0] > XMAX:
             speed[0] = XMAX
-    if D[0] == False and RIGHT[0] == False:
+    if RIGHT[0] == False:
         if speed[0] > 0:
             if speed[0] < XDECELERATION:
                 speed[0] = 0

@@ -27,11 +27,6 @@ def inputSaver(event, rANDwKey, rANDwMouse):
             if key.__class__ == list:
                 if event.key == key[1]:
                     key[0] = False
-        if key.__class__ == list:
-            if key[0] == True:
-                key[2] += 1
-            else:
-                key[2] = 0
     rANDwKey(Key, "w")
 
     #mouse saver
@@ -73,7 +68,7 @@ def eventMOVELEFT(rANDwKey, player):
 def eventMOVEUP(rANDwKey, player):
     Key = rANDwKey(0, "r") 
     W = Key[Key.index("W")+1]
-    if W[0] == True and W[2] == 1:
+    if W[0] == True and W[2]%51 == 1:
         player.mu = True
     else:
         player.mu = False
@@ -117,6 +112,12 @@ def eventsGUN(rANDwKey, gun, rANDwBullets):
 
 
 def inputHandler(game):    
+    for key in game.u.Key:
+        if key.__class__ == list:
+            if key[0] == True:
+                key[2] += 1
+            else:
+                key[2] = 0
     eventsMOVING(game.u.rANDwKey, game.player)
     eventsGUN(game.u.rANDwKey, game.gun, game.rANDwBullets)
     

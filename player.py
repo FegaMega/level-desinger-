@@ -28,7 +28,7 @@ class Player:
             self.speed[0] = (4/10) * self.max_speed
         if self.mr == self.ml:
             self.speed[0] = 0.0 
-        if self.mu == True and self.jumps > 0:
+        if self.mu == True:
             self.speed[1]= -15/10
             self.jumps -= 1
         self.pos[0]+= self.speed[0]
