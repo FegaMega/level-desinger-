@@ -344,7 +344,7 @@ def main() -> int:
         game.u.screen.blit(jumps_left, (10, 10))
 
         # Skriver hur snabb spelaren är på skärmen
-        speed = game.FONT.render(("speed: " + str(round(game.player.speed[0])) + "/" + str(round(game.player.max_speed, 1))), True, (0, 0, 0))
+        speed = game.FONT.render(("speed: " + str(round(game.player.speed[0], 1)) + "/" + str(round(game.player.max_speed, 1))), True, (0, 0, 0))
         game.u.screen.blit(speed, (10, 50))
 
         #Spelar musik

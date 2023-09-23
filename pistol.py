@@ -15,18 +15,37 @@ class Pistol:
         self.change_angle = 0
         self.og_surf = pygame.transform.smoothscale(pygame.image.load("data/img/gun.png").convert_alpha(), (self.size[0], self.size[1]))
         self.surf = self.og_surf
+        self.flip_surf = self.surf
+        self.flipped = False
         self.bullets = []
         self.bullet_spawn_pos = [0, 0]
     def rot(self):
         self.angle += self.change_angle
         self.angle = self.angle % 360
+            
+        if self.angle < 270 and self.angle > 90 and self.flipped == False:
+            self.rect = self.surf.get_rect(center=self.rect.center)
+            self.flip_surf = pygame.transform.flip(self.flip_surf, True, False)
+            self.flipped = True
+        if self.angle > 270 and self.flipped == True or self.angle < 90 and self.flipped == True:
+            self.rect = self.surf.get_rect(center=self.rect.center)
+            self.flip_surf = pygame.transform.flip(self.flip_surf, True, False)
+            self.flipped = False
         self.rect = self.surf.get_rect(center=self.rect.center)
-        self.surf = pygame.transform.rotate(self.og_surf, self.angle)
+        if self.flipped == False:
+            self.surf = pygame.transform.rotate(self.flip_surf, self.angle)
+        else:
+            self.surf = pygame.transform.rotate(self.flip_surf, self.angle-180)
     def shoot(self):
-        self.bullet_spawn_pos[0] = (self.pos[0] + self.rect.height/2 + ((math.cos(math.radians(self.angle+30))) * self.rect.height/2))
-        self.bullet_spawn_pos[1] = (self.pos[1] + self.rect.width/2 + ((math.sin(math.radians(self.angle+30))) * -self.rect.width/2))
+        if self.flipped == False:
+            self.bullet_spawn_pos[0] = (self.pos[0] + self.rect.height/2 + ((math.cos(math.radians(self.angle+30))) * self.rect.height/2))
+            self.bullet_spawn_pos[1] = (self.pos[1] + self.rect.width/2 + ((math.sin(math.radians(self.angle+30))) * -self.rect.width/2))
+        else:
+            self.bullet_spawn_pos[0] = (self.pos[0] + self.rect.height/2 + -((math.cos(math.radians(self.angle+30))) * self.rect.height/2))
+            self.bullet_spawn_pos[1] = (self.pos[1] + self.rect.width/2 + -((math.sin(math.radians(self.angle+30))) * -self.rect.width/2))
         self.bullets.append(bullet(self.bullet_spawn_pos[0], self.bullet_spawn_pos[1], 5, self.angle))
     def draw(self, scroll_x, scroll_y, screen):
         screen.blit(self.surf, (self.pos[0] - scroll_x, self.pos[1] - scroll_y))
+        
 
 
