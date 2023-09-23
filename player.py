@@ -3,9 +3,9 @@ from pygame.locals import *
 
 
 class Player:
-    def __init__(self):
+    def __init__(self, x, y):
         self.size = [50, 50]
-        self.pos = [250, 650]
+        self.pos = [x, y]
         self.speed:list = [0, 0]
         self.ml: bool = False
         self.mr: bool = False
@@ -30,7 +30,6 @@ class Player:
             self.speed[0] = 0.0 
         if self.mu == True:
             self.speed[1]= -15/10
-            self.jumps -= 1
         self.pos[0]+= self.speed[0]
         self.pos[1]+= self.speed[1]
         self.bottom:float = self.pos[1]+ self.size[1]

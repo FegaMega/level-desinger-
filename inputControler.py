@@ -1,5 +1,6 @@
 import pygame, objects, collision, speed
 from pygame.locals import *
+import start
 
 YACCELERATION = .1
 YDECELERATION = .1
@@ -163,15 +164,16 @@ def eventDELETECUBE(rANDwCubes, rANDwscroll, utils, LH, rANDwMoving, rANDwDragin
     D = Key[Key.index("D")+1]
     i = 0
     for cube in Cubes:
-        if collision.mouseCollision(mouse[0] + scroll[0], mouse[1] + scroll[1], cube.pos[0], cube.pos[1], cube.size[0], cube.size[1]) and (Del[0] == True or D[0] == True):
-            del Cubes[i]
-            moving = False
-            draging = [0, 0]
-            holding_newCube = False
-            LH.objectWriter(Cubes)
-            rANDwMoving(moving, "w")
-            rANDwDraging(draging, "w")
-            rANDwHolding_newCube(holding_newCube, "w")
+        if cube.__class__ == objects.cube or cube.__class__ == speed.speed:
+            if collision.mouseCollision(mouse[0] + scroll[0], mouse[1] + scroll[1], cube.pos[0], cube.pos[1], cube.size[0], cube.size[1]) and (Del[0] == True or D[0] == True):
+                del Cubes[i]
+                moving = False
+                draging = [0, 0]
+                holding_newCube = False
+                LH.objectWriter(Cubes)
+                rANDwMoving(moving, "w")
+                rANDwDraging(draging, "w")
+                rANDwHolding_newCube(holding_newCube, "w")
         i += 1 
 
 
@@ -187,7 +189,7 @@ def eventDRAGXSIZEONCUBE(rANDwCubes, utils, rANDwscroll, rANDwMoving, rANDwDragi
     outputDR = 0
     outputDRG = 0
     for cube in Cubes:
-        if cube.__class__ != speed.speed:
+        if cube.__class__ == objects.cube:
             extra_info = cube.rANDwExtra_info(0, "r")
 
             try:
@@ -245,7 +247,7 @@ def eventDRAGYSIZEONCUBE(rANDwCubes, utils, rANDwscroll, rANDwMoving, rANDwDragi
     outputDD = 0
     outputDDG = 0
     for cube in Cubes:
-        if cube.__class__ != speed.speed:
+        if cube.__class__ == objects.cube:
             extra_info = cube.rANDwExtra_info(0, "r")
 
             try:

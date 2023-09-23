@@ -68,8 +68,9 @@ def eventMOVELEFT(rANDwKey, player):
 def eventMOVEUP(rANDwKey, player):
     Key = rANDwKey(0, "r") 
     W = Key[Key.index("W")+1]
-    if W[0] == True and W[2]%51 == 1:
+    if W[0] == True and W[2]%52 == 1 and player.jumps > 0:
         player.mu = True
+        player.jumps -= 1
     else:
         player.mu = False
 

@@ -15,14 +15,19 @@ from tunnels import tunnel
 from Extra_jump import extra_jump
 from Finish import finish
 from bullet import bullet
+from start import startBlock
+
 import math
 
 class Game:
+    def find_start(self):
+        for obj in self.Level:
+            if isinstance(obj, startBlock):
+                return obj
     def __init__(self):
         self.r = True
-        self.player = player.Player()
         self.u = utils.utils()
-        self.gun = pistol.Pistol(self.player.pos[0], self.player.pos[1], 90)
+#        self.gun = pistol.Pistol(self.player.pos[0], self.player.pos[1], 90)
         self.music_lib = ["data/music/Cipher_BGM.flac", "data/music/Aloft_BGM.flac", "data/music/lemmino-nocturnal.flac"]
         self.m = mixer(self.music_lib)
         self.user = camera.camera(self.u)
@@ -30,12 +35,14 @@ class Game:
         self.sh = settingsfolder.settingshandeler(self.u)
         self.iC = inputControlerGame
         self.lh = levelhandler.levelhandeler("data/json/level.json")
+        self.Level = []
+        self.lh.objectReader(self.Level)
+        self.start = self.find_start()
+        self.player = player.Player(self.start.pos[0], self.start.pos[0])
         self.c = collision
         self.bullets = []
         self.gun = pistol.Pistol(0, 0, 90)
         self.scroll = [0, 0]
-        self.Level = []
-        self.lh.objectReader(self.Level)
         self.FONT = pygame.font.SysFont("Helvetica-bold", 50)
     def scrollFunc(self):
         self.scroll[0] += (self.player.pos[0] - self.scroll[0] - self.u.screenSize[0] / 2) / 10
@@ -172,6 +179,8 @@ class Game:
                 # kollar om det är en portal (de är speciella)
                 if object.__class__ == portal:
                     self.portalKollision(object)
+                if object.__class__ == startBlock:
+                    continue
                 # vanliga objekts kod
                 else:
                     # Kollar om spelaren är inuti objektet
@@ -273,6 +282,8 @@ class Game:
     def ritaObject(self):
         # Ritar objekten i game.Level
         for Object in self.Level:
+            if Object.__class__ == startBlock:
+                continue
             Object.draw(self.rANDwScroll)
 
 
