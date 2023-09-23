@@ -95,21 +95,20 @@ def eventROTATEGUN(rANDwKey, gun):
     
     
 
-def eventSHOOTGUN(rANDwKey, gun, rANDwBullets):
+def eventSHOOTGUN(rANDwKey, gun):
     Key = rANDwKey(0, "r") 
     SPACE = Key[Key.index("SPACE")+1]
-    bullets = rANDwBullets(0, "r")    
     if SPACE[0] == True and SPACE[2]%60 == 1:
-        bullets.append(bullet(gun.pos[0], gun.pos[1] + 3, 5, gun.angle))
+        gun.shoot()
 
 def eventsMOVING(rANDwKey, player):
     eventMOVELEFT(rANDwKey, player)
     eventMOVERIGHT(rANDwKey, player)
     eventMOVEUP(rANDwKey, player)      
 
-def eventsGUN(rANDwKey, gun, rANDwBullets):
+def eventsGUN(rANDwKey, gun):
     eventROTATEGUN(rANDwKey, gun)
-    eventSHOOTGUN(rANDwKey, gun, rANDwBullets)
+    eventSHOOTGUN(rANDwKey, gun)
 
 
 def inputHandler(game):    
@@ -120,5 +119,5 @@ def inputHandler(game):
             else:
                 key[2] = 0
     eventsMOVING(game.u.rANDwKey, game.player)
-    eventsGUN(game.u.rANDwKey, game.gun, game.rANDwBullets)
+    eventsGUN(game.u.rANDwKey, game.player.gun)
     

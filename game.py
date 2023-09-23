@@ -17,8 +17,6 @@ from Finish import finish
 from bullet import bullet
 from start import startBlock
 
-import math
-
 class Game:
     def find_start(self):
         for obj in self.Level:
@@ -27,9 +25,9 @@ class Game:
     def __init__(self):
         self.r = True
         self.u = utils.utils()
-#        self.gun = pistol.Pistol(self.player.pos[0], self.player.pos[1], 90)
+#        self.player.gun = pistol.Pistol(self.player.pos[0], self.player.pos[1], 90)
         self.music_lib = ["data/music/Cipher_BGM.flac", "data/music/Aloft_BGM.flac", "data/music/lemmino-nocturnal.flac"]
-        self.m = mixer(self.music_lib)
+        #self.m = mixer(self.music_lib)
         self.user = camera.camera(self.u)
         self.jh = JsonHandler()
         self.sh = settingsfolder.settingshandeler(self.u)
@@ -40,8 +38,6 @@ class Game:
         self.start = self.find_start()
         self.player = player.Player(self.start.pos[0], self.start.pos[0])
         self.c = collision
-        self.bullets = []
-        self.gun = pistol.Pistol(0, 0, 90)
         self.scroll = [0, 0]
         self.FONT = pygame.font.SysFont("Helvetica-bold", 50)
     def scrollFunc(self):
@@ -63,9 +59,9 @@ class Game:
     
     def rANDwBullets(self, bullets, rORw:str):
         if rORw == "w":
-            self.bullets = bullets
+            self.player.gun.bullets = bullets
         elif rORw == "r":
-            return self.bullets
+            return self.player.gun.bullets
 
     def golvCheck(self):
         # kollar om spelaren är under kamerans botten
@@ -160,9 +156,15 @@ class Game:
                     if self.player.speed[1] > 0:
                         self.player.speed[1] = 0
                     self.player.on_floor = True
-                if line[4] == "up":
+                elif line[4] == "up":
                     if self.player.speed[1] < 0:
                         self.player.speed[1] = 0
+                elif line[4] == "right":
+                    if self.player.speed[0] > 0:
+                        self.player.speed[0] = 0
+                elif line[4] == "left":
+                    if self.player.speed[0] < 0:
+                        self.player.speed[0] = 0
 
 
 
@@ -173,7 +175,9 @@ class Game:
             # Rör spelaren
             self.player.movement()
             # kollar om spelaren är under kamerans botten
-            self.golvCheck()
+#            self.golvCheck()
+            self.player.speed[1] += 0.4 / 60
+            self.player.on_floor = False
             # objekt collision loopen
             for object in self.Level:
                 # kollar om det är en portal (de är speciella)
@@ -200,18 +204,18 @@ class Game:
 
 
     def roteraPistol(self):   
-        if self.gun.rotateleft == True:
-            self.gun.angle -= 2
-        if self.gun.rotateright == True:
-            self.gun.angle += 2
-        self.gun.rot() 
+        if self.player.gun.rotateleft == True:
+            self.player.gun.angle -= 2
+        if self.player.gun.rotateright == True:
+            self.player.gun.angle += 2
+        self.player.gun.rot() 
 
 
 
     def centreraPistol(self):
         # flyttar vapnet till spelaren
-        self.gun.pos[0] = self.player.pos[0] + 10
-        self.gun.pos[1] = self.player.pos[1] + 20
+        self.player.gun.pos[0] = self.player.pos[0] + 10
+        self.player.gun.pos[1] = self.player.pos[1] + 20
         
 
 
@@ -240,36 +244,35 @@ class Game:
 
     def bulletNormalKollision(self, Object, Bullet):
         if self.c.rectCollision(Object.pos[0], Object.pos[1], Object.size[0], Object.size[1], Bullet.pos[0], Bullet.pos[1], Bullet.size[0], Bullet.size[1]) == True:
-            self.bullets.remove(Bullet)
+            self.player.gun.bullets.remove(Bullet)
 
 
 
     def bulletCollectebleKollision(self, Object, Bullet):
         if self.c.rectCollision(Object.pos[0], Object.pos[1], Object.size[0], Object.size[1], Bullet.pos[0], Bullet.pos[1], Bullet.size[0], Bullet.size[1]) == True:
             self.collektebleCollekted(Object)
-            self.Level.remove(Object)
 
 
 
     def bulletKollision(self, Object, Bullet):
         if Object.__class__ == portal:
             self.bulletPortalKollision(Object, Bullet)
-        elif Object.__class__ == extra_jump:
+        elif Object.__class__ == extra_jump or Object.__class__ == speed:
             self.bulletCollectebleKollision(Object, Bullet)
-        else:
+        elif Object.__class__ != startBlock:
             self.bulletNormalKollision(Object, Bullet)
     
     
     
     def bulletÅlderCheck(self, Bullet):
         if Bullet.frames_drawn > 500:
-                self.bullets.remove(Bullet)
+                self.player.gun.bullets.remove(Bullet)
         Bullet.frames_drawn += 1
     
 
 
     def bulletKollisionLoop(self):
-        for Bullet in self.bullets:
+        for Bullet in self.player.gun.bullets:
             Bullet.move()
             for Object in self.Level:
                 self.bulletKollision(Object, Bullet)
@@ -328,7 +331,7 @@ def main() -> int:
         game.bulletKollisionLoop()
         
         # Ritar vapnet
-        game.gun.draw(game.scroll[0], game.scroll[1], game.u.screen)
+        game.player.gun.draw(game.scroll[0], game.scroll[1], game.u.screen)
         
         # Ritar objekten i game.Level
         game.ritaObject()
@@ -339,16 +342,13 @@ def main() -> int:
         # Skriver hur många hopp spelaren har kvar på skärmen
         jumps_left = game.FONT.render(("jumps: " + str(game.player.jumps) + "/" + str(game.player.max_jumps)), True, (0, 0, 0))
         game.u.screen.blit(jumps_left, (10, 10))
-    
-        jumps_left = game.FONT.render(("jumps: " + str(game.u.Key[3][2])), True, (0, 0, 0))
-        game.u.screen.blit(jumps_left, (10, 100))
 
         # Skriver hur snabb spelaren är på skärmen
-        jumps_left = game.FONT.render(("speed: " + str(round(game.player.speed[0]*10, 1)/10) + "/" + str(round(game.player.max_speed*10, 1)/10)), True, (0, 0, 0))
-        game.u.screen.blit(jumps_left, (10, 50))
+        speed = game.FONT.render(("speed: " + str(round(game.player.speed[0])) + "/" + str(round(game.player.max_speed, 1))), True, (0, 0, 0))
+        game.u.screen.blit(speed, (10, 50))
 
         #Spelar musik
-        game.m.RunMusic()
+#        game.m.RunMusic()
         
         # uppdaterar skärmen
         pygame.display.update()
