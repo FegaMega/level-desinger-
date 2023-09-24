@@ -19,10 +19,12 @@ class Pistol:
         self.flipped = False
         self.bullets = []
         self.bullet_spawn_pos = [0, 0]
-    def rot(self):
-        self.angle += self.change_angle
-        self.angle = self.angle % 360
-            
+    def rot(self, mousePos, rANDwScroll):
+        scroll = rANDwScroll(0, "r")
+        x = mousePos[0] + scroll[0] - self.pos[0]
+        y = mousePos[1] + scroll[1] - self.pos[1]
+        self.angle = math.atan2(y, -x) * (180/math.pi) + 180
+        
         if self.angle < 270 and self.angle > 90 and self.flipped == False:
             self.rect = self.surf.get_rect(center=self.rect.center)
             self.flip_surf = pygame.transform.flip(self.flip_surf, True, False)

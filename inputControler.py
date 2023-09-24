@@ -12,7 +12,6 @@ XMAX = 3
 def eventDOWN(rANDwKey, rANDwSpeed):
     speed = rANDwSpeed(0, "r")
     Key = rANDwKey(0, "r")   
-    S = Key[Key.index("S")+1]
     DOWN = Key[Key.index("DOWN")+1]
     if DOWN[0] == True:
         if speed[1] < YMAX:

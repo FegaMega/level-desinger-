@@ -21,11 +21,9 @@ def ArrayOfStrToInt(str):
 
 
 
-class designer:
+class Designer:
     def __init__(self):
         self.u = utils.utils()
-        self.music_lib = ["data/music/Cipher_BGM.flac", "data/music/Aloft_BGM.flac", "data/music/lemmino-nocturnal.flac"]
-        self.m = mixer(self.music_lib)
         self.user = camera.camera(self.u)
         self.jh = JsonHandler()
         self.sh = settingsfolder.settingshandeler(self.u)
@@ -101,9 +99,9 @@ class designer:
 
     
 
-def main() -> int:
+def Designermain() -> int:
     pygame.init()
-    app = designer()
+    app = Designer()
 
     # spel loopen
 
@@ -126,17 +124,15 @@ def main() -> int:
         app.user.move()
         app.scrollFunc()
         app.drawButtons()
-        #spelar musik
-        app.m.RunMusic()
         # uppdaterar skärmen
         pygame.display.update()
 
         # 60 Fps limit
         pygame.time.Clock().tick(60)
     app.lh.objectWriter(app.cubes)
-    return 0
+    return 1
 
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    sys.exit(Designermain())

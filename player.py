@@ -15,9 +15,14 @@ class Player:
         self.jumps = 0
         self.TPallow: bool = True
         self.on_floor: bool = False
-        self.max_jumps = 2
+        self.max_jumps = 1
         self.max_speed = .3
         self.in_tunnel = False
+        self.on_wall = False
+        self.on_wall_object = 0
+        self.on_wall_object_left = 0
+        self.on_wall_left = False
+        self.on_wall_right = False
         self.hitbox: bool = [True, True]
         self.playe = pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
     def draw(self, scrollx, scrolly, screen):
@@ -40,7 +45,7 @@ class Player:
             else:
                 self.speed[0] = 0
         if self.mu == True:
-            self.speed[1]= -15/10
+            self.speed[1]= -12/10
         self.pos[0]+= self.speed[0]
         self.pos[1]+= self.speed[1]
         self.bottom:float = self.pos[1]+ self.size[1]

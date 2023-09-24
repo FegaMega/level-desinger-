@@ -68,9 +68,16 @@ def eventMOVELEFT(rANDwKey, player):
 def eventMOVEUP(rANDwKey, player):
     Key = rANDwKey(0, "r") 
     W = Key[Key.index("W")+1]
-    if W[0] == True and W[2]%52 == 1 and player.jumps > 0:
+    if W[0] == True and W[2]%43 == 1 and player.jumps > 0:
         player.mu = True
         player.jumps -= 1
+        if player.on_wall == True and player.on_floor == False:
+            player.on_wall_object_left = player.on_wall_object
+            player.on_wall = False
+            if player.on_wall_left == True:
+                player.speed[0] = .5
+            if player.on_wall_right == True:
+                player.speed[0] = -.5
     else:
         player.mu = False
 
@@ -95,10 +102,10 @@ def eventROTATEGUN(rANDwKey, gun):
     
     
 
-def eventSHOOTGUN(rANDwKey, gun):
-    Key = rANDwKey(0, "r") 
-    SPACE = Key[Key.index("SPACE")+1]
-    if SPACE[0] == True and SPACE[2]%60 == 1:
+def eventSHOOTGUN(rANDwMouse, gun):
+    Mouse = rANDwMouse(0, "r") 
+    MOUSELEFT = Mouse[Mouse.index("MOUSELEFT")+1]
+    if MOUSELEFT[0] == True and MOUSELEFT[2]%10 == 1:
         gun.shoot()
 
 def eventsMOVING(rANDwKey, player):
@@ -106,9 +113,9 @@ def eventsMOVING(rANDwKey, player):
     eventMOVERIGHT(rANDwKey, player)
     eventMOVEUP(rANDwKey, player)      
 
-def eventsGUN(rANDwKey, gun):
+def eventsGUN(rANDwKey, rANDwMouse,  gun):
     eventROTATEGUN(rANDwKey, gun)
-    eventSHOOTGUN(rANDwKey, gun)
+    eventSHOOTGUN(rANDwMouse, gun)
 
 
 def inputHandler(game):    
@@ -118,6 +125,18 @@ def inputHandler(game):
                 key[2] += 1
             else:
                 key[2] = 0
+    Mouse = game.u.rANDwMouse(0, "r")
+    MouseLeft = Mouse[Mouse.index("MOUSELEFT")+1]
+    MouseRight = Mouse[Mouse.index("MOUSERIGHT")+1]
+    
+    if MouseLeft[0] == True:
+        MouseLeft[2] += 1
+    else:
+        MouseLeft[2] = 0
+    if MouseRight[0] == True:
+        MouseRight[2] += 1
+    else:
+        MouseRight[2] = 0
     eventsMOVING(game.u.rANDwKey, game.player)
-    eventsGUN(game.u.rANDwKey, game.player.gun)
+    eventsGUN(game.u.rANDwKey, game.u.rANDwMouse,  game.player.gun)
     

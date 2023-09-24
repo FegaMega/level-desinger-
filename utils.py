@@ -1,8 +1,8 @@
 import pygame
 from screeninfo import get_monitors
 import os
-x=100
-y=100
+x=0
+y=0
 os.environ['SDL_VIDEO_WINDOW_POS'] = '%d,%d' % (x,y)
 for m in get_monitors():
     if m.is_primary == True:
@@ -54,8 +54,8 @@ class utils:
             "SPACE", [False, pygame.K_SPACE, 0]
         ]
         self.Mouse = [
-            "MOUSELEFT", [False, 1],           
-            "MOUSERIGHT", [False, 3],
+            "MOUSELEFT", [False, 1, 0],           
+            "MOUSERIGHT", [False, 3, 0],
             "MOUSE", [[0, 0], [0, 0]], #[str, pos, oldpos]
             "MOUSESCROLLUP", [False, 4],
             "MOUSESCROLLDOWN", [False, 5]
@@ -81,8 +81,8 @@ class utils:
         elif rORw == "r":
             return self.screenSize
     def newScreen(self):
-        x=100
-        y=100
+        x=0
+        y=0
         os.environ['SDL_VIDEO_WINDOW_POS'] = '%d,%d' % (x,y)
         self.screen = pygame.display.set_mode(self.screenSize, vsync=1)
     def rot_center(image, rect, angle):

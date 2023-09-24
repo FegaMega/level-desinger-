@@ -36,10 +36,11 @@ class Game:
         self.Level = []
         self.lh.objectReader(self.Level)
         self.start = self.find_start()
-        self.player = player.Player(self.start.pos[0], self.start.pos[0])
+        self.player = player.Player(self.start.pos[0], self.start.pos[1])
         self.c = collision
         self.scroll = [0, 0]
         self.FONT = pygame.font.SysFont("Helvetica-bold", 50)
+        self.mousePos = [0, 0]
     def scrollFunc(self):
         self.scroll[0] += (self.player.pos[0] - self.scroll[0] - self.u.screenSize[0] / 2) / 10
         self.scroll[1] += (self.player.pos[1] - self.scroll[1] - self.u.screenSize[1] / 2) / 10
@@ -162,22 +163,33 @@ class Game:
                 elif line[4] == "right":
                     if self.player.speed[0] > 0:
                         self.player.speed[0] = 0
+                    if self.player.on_wall_object_left != object:
+                        self.player.on_wall = True
+                        self.player.on_wall_object = object
+                        self.player.on_wall_right = True
                 elif line[4] == "left":
                     if self.player.speed[0] < 0:
                         self.player.speed[0] = 0
+                    if self.player.on_wall_object_left != object:
+                        self.player.on_wall = True
+                        self.player.on_wall_left = True
+                        self.player.on_wall_object = object
 
 
 
     def kollision(self):
         # sätter player.in_tunnel av för collision loopen
         self.player.in_tunnel = False
+        self.player.on_floor = False
+        self.player.on_wall = False
+        self.player.on_wall_left = False
+        self.player.on_wall_right = False
         for i in range(9):
             # Rör spelaren
             self.player.movement()
             # kollar om spelaren är under kamerans botten
 #            self.golvCheck()
             self.player.speed[1] += 0.4 / 60
-            self.player.on_floor = False
             # objekt collision loopen
             for object in self.Level:
                 # kollar om det är en portal (de är speciella)
@@ -198,17 +210,19 @@ class Game:
                             self.linjeKollisiomMedObjekt(object)
                 # lägger till ett så att jag vet att jag är i nästa objekt i listan game.Level
         # resetar mina hopp ifall jag är på marken
+        if self.player.on_wall == True and self.player.on_wall_object != self.player.on_wall_object_left:
+            self.player.jumps = 1
+        if self.player.on_wall == False and self.player.on_wall_object != 0:
+            self.player.on_wall_object_left = self.player.on_wall_object
         if self.player.on_floor == True:
             self.player.jumps = self.player.max_jumps
+            self.player.on_wall_object_left = 0
+            self.player.on_wall_object = 0
 
 
 
     def roteraPistol(self):   
-        if self.player.gun.rotateleft == True:
-            self.player.gun.angle -= 2
-        if self.player.gun.rotateright == True:
-            self.player.gun.angle += 2
-        self.player.gun.rot() 
+        self.player.gun.rot(self.mousePos, self.rANDwScroll) 
 
 
 
@@ -294,7 +308,10 @@ class Game:
     def ritaKollisiolinjer(self):
         for i in self.player.collision_lines:
             pygame.draw.rect(self.u.screen, (255, 0, 0), pygame.Rect(i[0] - self.scroll[0], i[1] - self.scroll[1], i[2], i[3]))
-def main() -> int:
+
+    def updateMouse(self):
+        self.mousePos = pygame.mouse.get_pos()
+def gamemain() -> int:
     pygame.init()
     game = Game()
 
@@ -302,6 +319,7 @@ def main() -> int:
 
     while game.r == True:
         game.u.screen.fill((146, 244, 255))
+        game.updateMouse()
         # Töm event kön
         for event in pygame.event.get():
             # Quit kod
@@ -339,17 +357,6 @@ def main() -> int:
         # ritat kollision linjerna på spelar(tillfällig)
         game.ritaKollisiolinjer()
         
-        # Skriver hur många hopp spelaren har kvar på skärmen
-        jumps_left = game.FONT.render(("jumps: " + str(game.player.jumps) + "/" + str(game.player.max_jumps)), True, (0, 0, 0))
-        game.u.screen.blit(jumps_left, (10, 10))
-
-        # Skriver hur snabb spelaren är på skärmen
-        speed = game.FONT.render(("speed: " + str(round(game.player.speed[0], 1)) + "/" + str(round(game.player.max_speed, 1))), True, (0, 0, 0))
-        game.u.screen.blit(speed, (10, 50))
-
-        #Spelar musik
-#        game.m.RunMusic()
-        
         # uppdaterar skärmen
         pygame.display.update()
         
@@ -358,5 +365,6 @@ def main() -> int:
         
         # spelaren rör sig inte upp
         #         game.player.mu = False
-    return 0
-sys.exit(main())
+    return 1
+if __name__ == "__main__":
+    sys.exit(gamemain())
