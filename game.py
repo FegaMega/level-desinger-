@@ -280,7 +280,7 @@ class Game:
     
     def bulletÅlderCheck(self, Bullet):
         if Bullet.frames_drawn > 500:
-                self.player.gun.bullets.remove(Bullet)
+            self.player.gun.bullets.remove(Bullet)
         Bullet.frames_drawn += 1
     
 

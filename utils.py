@@ -2,7 +2,7 @@ import pygame
 from screeninfo import get_monitors
 import os
 x=0
-y=0
+y=30
 os.environ['SDL_VIDEO_WINDOW_POS'] = '%d,%d' % (x,y)
 for m in get_monitors():
     if m.is_primary == True:
@@ -82,7 +82,7 @@ class utils:
             return self.screenSize
     def newScreen(self):
         x=0
-        y=0
+        y=30
         os.environ['SDL_VIDEO_WINDOW_POS'] = '%d,%d' % (x,y)
         self.screen = pygame.display.set_mode(self.screenSize, vsync=1)
     def rot_center(image, rect, angle):
