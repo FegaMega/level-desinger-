@@ -360,7 +360,7 @@ def gamemain() -> int:
         pygame.display.update()
         
         # 60 Fps limmit
-        pygame.time.Clock().tick(0)
+        pygame.time.Clock().tick(60)
         
         # spelaren rör sig inte upp
         #         game.player.mu = False
