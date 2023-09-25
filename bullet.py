@@ -12,9 +12,9 @@ class bullet:
         self.surf = pygame.transform.rotate(self.og_surf, self.angle)
         self.rect = pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
         self.TPallow: bool = True
-    def move(self):
-        self.pos[0] += (math.cos(math.radians(self.angle))) * self.speed
-        self.pos[1] -= (math.sin(math.radians(self.angle))) * self.speed
+    def move(self, deltaTime):
+        self.pos[0] += (math.cos(math.radians(self.angle))) * self.speed * deltaTime
+        self.pos[1] -= (math.sin(math.radians(self.angle))) * self.speed * deltaTime
     def draw(self, screen, rANDwScroll):
         scroll = rANDwScroll(0, "r")
         self.rect = pygame.Rect(self.pos[0]  - scroll[0], self.pos[1] - scroll[1], self.size[0], self.size[1])

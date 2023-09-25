@@ -16,7 +16,7 @@ class Player:
         self.TPallow: bool = True
         self.on_floor: bool = False
         self.max_jumps = 1
-        self.max_speed = .3
+        self.max_speed = 15
         self.in_tunnel = False
         self.on_wall = False
         self.on_wall_object = 0
@@ -26,26 +26,30 @@ class Player:
         self.hitbox: bool = [True, True]
         self.playe = pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
     def draw(self, scrollx, scrolly, screen):
+        # flyttar vapnet till spelaren
+        self.gun.pos[0] = self.pos[0] + 10
+        self.gun.pos[1] = self.pos[1] + 20
         playe = pygame.Rect(self.pos[0]- scrollx, self.pos[1]- scrolly, 50, 50)
         pygame.draw.rect(screen, (0, 255, 0), playe)
-    def movement(self):
+        self.gun.draw(scrollx, scrolly, screen)
+    def movement(self, deltaTime):
         if self.ml:
-            self.speed[0] -= self.max_speed/(60)
-            if self.speed[0] < -self.max_speed:
-                self.speed[0] = -self.max_speed
+            self.speed[0] -= self.max_speed * deltaTime
+            if self.speed[0] < -self.max_speed * deltaTime:
+                self.speed[0] = -self.max_speed * deltaTime
         if self.mr:
-            self.speed[0] += self.max_speed/(60)
-            if self.speed[0] > self.max_speed:
-                self.speed[0] = self.max_speed
+            self.speed[0] += self.max_speed * deltaTime
+            if self.speed[0] > self.max_speed * deltaTime:
+                self.speed[0] = self.max_speed * deltaTime
         if self.mr == self.ml:
-            if self.speed[0] > 0.05:
-                self.speed[0] -= self.speed[0]/60 
-            elif self.speed[0] < -0.05:
-                self.speed[0] -= self.speed[0]/60
+            if self.speed[0] > 0.05 * deltaTime:
+                self.speed[0] -= self.speed[0] * 2 * deltaTime
+            elif self.speed[0] < -0.05 * deltaTime:
+                self.speed[0] -= self.speed[0] * 2 * deltaTime
             else:
                 self.speed[0] = 0
         if self.mu == True:
-            self.speed[1]= -12/10
+            self.speed[1]= -60 * deltaTime
         self.pos[0]+= self.speed[0]
         self.pos[1]+= self.speed[1]
         self.bottom:float = self.pos[1]+ self.size[1]

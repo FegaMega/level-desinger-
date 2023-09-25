@@ -16,6 +16,7 @@ from Extra_jump import extra_jump
 from Finish import finish
 from bullet import bullet
 from start import startBlock
+import time
 
 class Game:
     def find_start(self):
@@ -25,6 +26,7 @@ class Game:
     def __init__(self):
         self.r = True
         self.u = utils.utils()
+        self.deltaTime = [0, time.clock_gettime(time.CLOCK_MONOTONIC    )]
 #        self.player.gun = pistol.Pistol(self.player.pos[0], self.player.pos[1], 90)
         self.music_lib = ["data/music/Cipher_BGM.flac", "data/music/Aloft_BGM.flac", "data/music/lemmino-nocturnal.flac"]
         #self.m = mixer(self.music_lib)
@@ -46,7 +48,9 @@ class Game:
         self.scroll[1] += (self.player.pos[1] - self.scroll[1] - self.u.screenSize[1] / 2) / 10
 #        if self.scroll[1] > 0:
 #           self.scroll[1] = 0
-
+    def deltaTimeUppdate(self):
+        self.deltaTime[0] = time.clock_gettime(time.CLOCK_MONOTONIC) - self.deltaTime[1]
+        self.deltaTime[1] = time.clock_gettime(time.CLOCK_MONOTONIC)
     def rANDwScroll(self, scroll, rORw:str):
         if rORw == "w":
             self.scroll = scroll
@@ -72,7 +76,7 @@ class Game:
         else:
             # Gravitation
             # säger att spelaren inte är på golvet
-            self.player.speed[1] += 0.4 / 60
+            self.player.speed[1] += 20 / 60
             self.player.on_floor = False
 
             
@@ -100,7 +104,7 @@ class Game:
             self.Level.remove(object)
         # Kollar om det är en extra_jump
         if object.__class__ == speed:
-            self.player.max_speed += .1
+            self.player.max_speed += 5
             # tar bort extra_jump saken
             self.Level.remove(object)
     
@@ -186,10 +190,10 @@ class Game:
         self.player.on_wall_right = False
         for i in range(9):
             # Rör spelaren
-            self.player.movement()
+            self.player.movement(self.deltaTime[0])
             # kollar om spelaren är under kamerans botten
 #            self.golvCheck()
-            self.player.speed[1] += 0.4 / 60
+            self.player.speed[1] += (0.4) * self.deltaTime[0]
             # objekt collision loopen
             for object in self.Level:
                 # kollar om det är en portal (de är speciella)
@@ -218,18 +222,13 @@ class Game:
             self.player.jumps = self.player.max_jumps
             self.player.on_wall_object_left = 0
             self.player.on_wall_object = 0
+        if self.player.on_floor == False and self.player.on_wall == False:
+            self.player.jumps = 0
 
 
 
     def roteraPistol(self):   
         self.player.gun.rot(self.mousePos, self.rANDwScroll) 
-
-
-
-    def centreraPistol(self):
-        # flyttar vapnet till spelaren
-        self.player.gun.pos[0] = self.player.pos[0] + 10
-        self.player.gun.pos[1] = self.player.pos[1] + 20
         
 
 
@@ -259,6 +258,8 @@ class Game:
     def bulletNormalKollision(self, Object, Bullet):
         if self.c.rectCollision(Object.pos[0], Object.pos[1], Object.size[0], Object.size[1], Bullet.pos[0], Bullet.pos[1], Bullet.size[0], Bullet.size[1]) == True:
             self.player.gun.bullets.remove(Bullet)
+            return 1
+        return 0
 
 
 
@@ -281,18 +282,21 @@ class Game:
     def bulletÅlderCheck(self, Bullet):
         if Bullet.frames_drawn > 500:
             self.player.gun.bullets.remove(Bullet)
+            return 1
         Bullet.frames_drawn += 1
-    
+        return 0
 
 
     def bulletKollisionLoop(self):
         for Bullet in self.player.gun.bullets:
-            Bullet.move()
+            Bullet.move(self.deltaTime[0])
             for Object in self.Level:
-                self.bulletKollision(Object, Bullet)
+                if 1 == self.bulletKollision(Object, Bullet):
+                    continue
             Bullet.draw(self.u.screen, self.rANDwScroll)
             # kollar om skotten är gamla
-            self.bulletÅlderCheck(Bullet)
+            if 1 == self.bulletÅlderCheck(Bullet):
+                continue
 
 
 
@@ -320,6 +324,7 @@ def gamemain() -> int:
     while game.r == True:
         game.u.screen.fill((146, 244, 255))
         game.updateMouse()
+        game.deltaTimeUppdate()
         # Töm event kön
         for event in pygame.event.get():
             # Quit kod
@@ -339,17 +344,11 @@ def gamemain() -> int:
         # Roterar vapnbet
         game.roteraPistol()
 
-        # flyttar vapnet till spelaren
-        game.centreraPistol()
-
         # ritar spelaren och flyttar den
         game.ritaSpelare()
 
         # Kollar om skotten rör vid ett objekt och flyttar de fram
         game.bulletKollisionLoop()
-        
-        # Ritar vapnet
-        game.player.gun.draw(game.scroll[0], game.scroll[1], game.u.screen)
         
         # Ritar objekten i game.Level
         game.ritaObject()
@@ -361,7 +360,7 @@ def gamemain() -> int:
         pygame.display.update()
         
         # 60 Fps limmit
-        pygame.time.Clock().tick(60)
+        pygame.time.Clock().tick(0)
         
         # spelaren rör sig inte upp
         #         game.player.mu = False

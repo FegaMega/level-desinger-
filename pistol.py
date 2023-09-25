@@ -45,7 +45,7 @@ class Pistol:
         else:
             self.bullet_spawn_pos[0] = (self.pos[0] + self.rect.height/2 + -((math.cos(math.radians(self.angle+30))) * self.rect.height/2))
             self.bullet_spawn_pos[1] = (self.pos[1] + self.rect.width/2 + -((math.sin(math.radians(self.angle+30))) * -self.rect.width/2))
-        self.bullets.append(bullet(self.bullet_spawn_pos[0], self.bullet_spawn_pos[1], 5, self.angle))
+        self.bullets.append(bullet(self.bullet_spawn_pos[0], self.bullet_spawn_pos[1], 250, self.angle))
     def draw(self, scroll_x, scroll_y, screen):
         screen.blit(self.surf, (self.pos[0] - scroll_x, self.pos[1] - scroll_y))
         
