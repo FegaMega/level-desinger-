@@ -16,7 +16,7 @@ class Player:
         self.TPallow: bool = True
         self.on_floor: bool = False
         self.max_jumps = 1
-        self.max_speed = 15
+        self.max_speed = 0.0255
         self.in_tunnel = False
         self.on_wall = False
         self.on_wall_object = 0
@@ -33,23 +33,24 @@ class Player:
         pygame.draw.rect(screen, (0, 255, 0), playe)
         self.gun.draw(scrollx, scrolly, screen)
     def movement(self, deltaTime):
+        print(deltaTime)
         if self.ml:
-            self.speed[0] -= self.max_speed * deltaTime
+            self.speed[0] -= self.max_speed/20 * deltaTime
             if self.speed[0] < -self.max_speed * deltaTime:
                 self.speed[0] = -self.max_speed * deltaTime
         if self.mr:
-            self.speed[0] += self.max_speed * deltaTime
+            self.speed[0] += self.max_speed/20 * deltaTime
             if self.speed[0] > self.max_speed * deltaTime:
                 self.speed[0] = self.max_speed * deltaTime
         if self.mr == self.ml:
             if self.speed[0] > 0.05 * deltaTime:
-                self.speed[0] -= self.speed[0] * 2 * deltaTime
+                self.speed[0] -= self.speed[0] / 20 * deltaTime
             elif self.speed[0] < -0.05 * deltaTime:
-                self.speed[0] -= self.speed[0] * 2 * deltaTime
+                self.speed[0] -= self.speed[0] / 20 * deltaTime
             else:
                 self.speed[0] = 0
         if self.mu == True:
-            self.speed[1]= -60 * deltaTime
+            self.speed[1]= -.07 * deltaTime
         self.pos[0]+= self.speed[0]
         self.pos[1]+= self.speed[1]
         self.bottom:float = self.pos[1]+ self.size[1]
