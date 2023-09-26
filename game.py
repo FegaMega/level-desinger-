@@ -16,8 +16,6 @@ from Extra_jump import extra_jump
 from Finish import finish
 from bullet import bullet
 from start import startBlock
-import time
-
 class Game:
     def find_start(self):
         for obj in self.Level:
@@ -26,7 +24,8 @@ class Game:
     def __init__(self):
         self.r = True
         self.u = utils.utils()
-        self.deltaTime = [0, time.clock_gettime(time.CLOCK_MONOTONIC    )]
+        self.Clock = pygame.time.Clock()
+        self.deltaTime = [0, pygame.time.get_ticks()/1000]
 #        self.player.gun = pistol.Pistol(self.player.pos[0], self.player.pos[1], 90)
         self.music_lib = ["data/music/Cipher_BGM.flac", "data/music/Aloft_BGM.flac", "data/music/lemmino-nocturnal.flac"]
         #self.m = mixer(self.music_lib)
@@ -49,8 +48,9 @@ class Game:
 #        if self.scroll[1] > 0:
 #           self.scroll[1] = 0
     def deltaTimeUppdate(self):
-        self.deltaTime[0] = time.clock_gettime(time.CLOCK_MONOTONIC) - self.deltaTime[1]
-        self.deltaTime[1] = time.clock_gettime(time.CLOCK_MONOTONIC)
+        self.deltaTime[0] = pygame.time.get_ticks() - self.deltaTime[1]
+        self.deltaTime[1] = pygame.time.get_ticks()
+    
     def rANDwScroll(self, scroll, rORw:str):
         if rORw == "w":
             self.scroll = scroll
@@ -104,7 +104,7 @@ class Game:
             self.Level.remove(object)
         # Kollar om det är en extra_jump
         if object.__class__ == speed:
-            self.player.max_speed += 5
+            self.player.max_speed += .0005
             # tar bort extra_jump saken
             self.Level.remove(object)
     
@@ -123,11 +123,11 @@ class Game:
         if self.player.in_tunnel == False:
             if line[4] == "down":
                 self.player.pos[1] = object.pos[1] - self.player.size[1]
-                self.player.yspeed = 0
+                self.player.speed[1] = 0
                 self.player.on_floor = True
             elif line[4] == "up":
                 self.player.pos[1] = object.pos[1] + object.size[1]
-                self.player.yspeed = 0
+                self.player.speed[1] = 0
 
 
 
@@ -135,17 +135,17 @@ class Game:
         self.player.in_tunnel = False
         if line[4] == "right":
             self.player.pos[0] = object.pos[0] - self.player.size[0]
-            self.player.xspeed = 0
+            self.player.speed[0] = 0
         elif line[4] == "left":
             self.player.pos[0] = object.pos[0] + object.size[0]
-            self.player.xspeed = 0
+            self.player.speed[0] = 0
         elif line[4] == "down":
             self.player.pos[1] = object.pos[1] - self.player.size[1]
-            self.player.yspeed = 0
+            self.player.speed[1] = 0
             self.player.on_floor = True
         elif line[4] == "up":
             self.player.pos[1] = object.pos[1] + object.size[1]
-            self.player.yspeed = 0
+            self.player.speed[1] = 0
 
 
 
@@ -193,7 +193,7 @@ class Game:
             self.player.movement(self.deltaTime[0])
             # kollar om spelaren är under kamerans botten
 #            self.golvCheck()
-            self.player.speed[1] += (0.4) * self.deltaTime[0]
+            self.player.speed[1] += 0.0004 * self.deltaTime[0]
             # objekt collision loopen
             for object in self.Level:
                 # kollar om det är en portal (de är speciella)
@@ -359,11 +359,9 @@ def gamemain() -> int:
         # uppdaterar skärmen
         pygame.display.update()
         
-        # 60 Fps limmit
-        pygame.time.Clock().tick(60)
+        #Fps limmit
+        game.Clock.tick(600)
         
-        # spelaren rör sig inte upp
-        #         game.player.mu = False
     return 1
 if __name__ == "__main__":
     sys.exit(gamemain())
