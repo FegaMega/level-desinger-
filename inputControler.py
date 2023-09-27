@@ -2,12 +2,12 @@ import pygame, objects, collision, speed
 from pygame.locals import *
 import start
 
-YACCELERATION = .1
-YDECELERATION = .1
-YMAX = 3
-XACCELERATION = .1
-XDECELERATION = .1
-XMAX = 3
+YACCELERATION = .2
+YDECELERATION = .2
+YMAX = 2
+XACCELERATION = .2
+XDECELERATION = .2
+XMAX = 2
 
 def eventDOWN(rANDwKey, rANDwSpeed):
     speed = rANDwSpeed(0, "r")

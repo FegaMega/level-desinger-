@@ -33,26 +33,25 @@ class Player:
         pygame.draw.rect(screen, (0, 255, 0), playe)
         self.gun.draw(scrollx, scrolly, screen)
     def movement(self, deltaTime):
-        print(deltaTime)
         if self.ml:
-            self.speed[0] -= self.max_speed/20 * deltaTime
-            if self.speed[0] < -self.max_speed * deltaTime:
-                self.speed[0] = -self.max_speed * deltaTime
+            self.speed[0] -= (self.max_speed/20)
+            if self.speed[0] < -self.max_speed:
+                self.speed[0] = -self.max_speed
         if self.mr:
-            self.speed[0] += self.max_speed/20 * deltaTime
-            if self.speed[0] > self.max_speed * deltaTime:
-                self.speed[0] = self.max_speed * deltaTime
+            self.speed[0] += (self.max_speed/20)
+            if self.speed[0] > self.max_speed:
+                self.speed[0] = self.max_speed
         if self.mr == self.ml:
-            if self.speed[0] > 0.05 * deltaTime:
-                self.speed[0] -= self.speed[0] / 20 * deltaTime
-            elif self.speed[0] < -0.05 * deltaTime:
-                self.speed[0] -= self.speed[0] / 20 * deltaTime
+            if self.speed[0] > 0.0005:
+                self.speed[0] -= (self.speed[0] / 20)
+            elif self.speed[0] < -0.0005:
+                self.speed[0] -= (self.speed[0] / 20)
             else:
                 self.speed[0] = 0
         if self.mu == True:
-            self.speed[1]= -.07 * deltaTime
-        self.pos[0]+= self.speed[0]
-        self.pos[1]+= self.speed[1]
+            self.speed[1]= -.07
+        self.pos[0]+= self.speed[0] * deltaTime
+        self.pos[1]+= self.speed[1] * deltaTime
         self.bottom:float = self.pos[1]+ self.size[1]
         self.right: float = self.pos[0]+ self.size[0] 
         self.collision_lines = [[self.right - 5, self.pos[1]+ 5, 10, 1, "right"], [self.pos[0]- 5, self.bottom - 5, 10, 1, "left"], [self.pos[0]+ 5, self.bottom - 5, 1, 10, "down"], [self.right - 5, self.bottom - 5, 1, 10, "down"], [self.right - 5, self.bottom - 5, 10, 1, "right"], [self.pos[0]- 5, self.pos[1]+ 5, 10, 1, "left"], [self.pos[0]+ 5, self.pos[1] - 5, 1, 10, "up"], [self.right - 5, self.pos[1] - 5, 1, 10, "up"]]

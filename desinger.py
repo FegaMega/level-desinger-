@@ -5,7 +5,6 @@ from JH import JsonHandler
 import settingsfolder
 import inputControler
 import levelhandler
-from music import mixer
 from buttonControler import button
 
 
@@ -29,6 +28,8 @@ class Designer:
         self.sh = settingsfolder.settingshandeler(self.u)
         self.iC = inputControler
         self.lh = levelhandler.levelhandeler("data/json/level.json")
+        self.Clock = pygame.time.Clock()
+        self.deltaTime = [0, 0]
         self.r = True
         self.scroll = [0, 0]
         self.cubes = []
@@ -39,6 +40,10 @@ class Designer:
         self.moving = False
         self.VisualMisc = []
         self.holding_newCube = False
+
+    def deltaTimeUppdate(self):
+        self.deltaTime[0] = pygame.time.get_ticks() - self.deltaTime[1]
+        self.deltaTime[1] = pygame.time.get_ticks()
     def rANDwMoving(self, moving, rORw:str):
         if rORw == "w":
             self.moving = moving
@@ -99,7 +104,7 @@ class Designer:
 
     
 
-def Designermain() -> int:
+def Designermain(MIXER) -> int:
     pygame.init()
     app = Designer()
 
@@ -107,6 +112,7 @@ def Designermain() -> int:
 
     while app.r == True:
         app.mousePos = app.mousePosUpdate()
+        app.deltaTimeUppdate()
         app.u.screen.fill((146, 244, 255)) # Dubbelbuffer (ej visad bild)
         #Updaterar mus positionen
         app.mousePos = app.mousePosUpdate()
@@ -121,12 +127,13 @@ def Designermain() -> int:
             
         # Ritar object
         app.drawCubes()
-        app.user.move()
+        app.user.move(app.deltaTime[0])
         app.scrollFunc()
         app.drawButtons()
         # uppdaterar skärmen
         pygame.display.update()
-
+        #spelar musik
+        MIXER.RunMusic()
         # 60 Fps limit
         pygame.time.Clock().tick(60)
     app.lh.objectWriter(app.cubes)

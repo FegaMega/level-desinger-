@@ -61,13 +61,13 @@ def main() -> int:
 if __name__ == "__main__":
     i = True
     music_lib = ["data/music/Cipher_BGM.flac", "data/music/Aloft_BGM.flac", "data/music/lemmino-nocturnal.flac"]
-    mixer(music_lib)
+    Mixer = mixer(music_lib)
     while i == True:
         r = main()
         print (r)
         if r == "game":
-            gamemain()
+            gamemain(Mixer)
         if r == "desinger":
-            Designermain()
+            Designermain(Mixer)
         if r == 0:
             sys.exit() 

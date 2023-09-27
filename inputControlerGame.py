@@ -74,10 +74,10 @@ def eventMOVEUP(rANDwKey, player):
         if player.on_wall == True and player.on_floor == False:
             player.on_wall_object_left = player.on_wall_object
             player.on_wall = False
-            if player.on_wall_left == True:
-                player.speed[0] = .5
-            if player.on_wall_right == True:
-                player.speed[0] = -.5
+#            if player.on_wall_left == True:
+ #               player.speed[0] = .05
+#            if player.on_wall_right == True:
+  #              player.speed[0] = -.05
     else:
         player.mu = False
 

@@ -25,7 +25,7 @@ class Game:
         self.r = True
         self.u = utils.utils()
         self.Clock = pygame.time.Clock()
-        self.deltaTime = [0, pygame.time.get_ticks()/1000]
+        self.deltaTime = [0, pygame.time.get_ticks()]
 #        self.player.gun = pistol.Pistol(self.player.pos[0], self.player.pos[1], 90)
         self.music_lib = ["data/music/Cipher_BGM.flac", "data/music/Aloft_BGM.flac", "data/music/lemmino-nocturnal.flac"]
         #self.m = mixer(self.music_lib)
@@ -193,7 +193,7 @@ class Game:
             self.player.movement(self.deltaTime[0])
             # kollar om spelaren är under kamerans botten
 #            self.golvCheck()
-            self.player.speed[1] += 0.0004 * self.deltaTime[0]
+            self.player.speed[1] += 0.00003 * self.deltaTime[0]
             # objekt collision loopen
             for object in self.Level:
                 # kollar om det är en portal (de är speciella)
@@ -315,7 +315,7 @@ class Game:
 
     def updateMouse(self):
         self.mousePos = pygame.mouse.get_pos()
-def gamemain() -> int:
+def gamemain(MIXER) -> int:
     pygame.init()
     game = Game()
 
@@ -358,10 +358,13 @@ def gamemain() -> int:
         
         # uppdaterar skärmen
         pygame.display.update()
+
+        #spelar musik
+        MIXER.RunMusic()
         
         #Fps limmit
-        game.Clock.tick(600)
-        
+        game.Clock.tick(60)
+        print(game.deltaTime[1]/1000)
     return 1
 if __name__ == "__main__":
     sys.exit(gamemain())
