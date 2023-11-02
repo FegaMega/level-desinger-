@@ -315,10 +315,11 @@ class Game:
 
     def updateMouse(self):
         self.mousePos = pygame.mouse.get_pos()
-def gamemain(MIXER) -> int:
+def gamemain(MIXER = 0) -> int:
     pygame.init()
     game = Game()
-
+    if MIXER != 0:
+        print("Mixer Recived")
     # spel loopen
 
     while game.r == True:
@@ -360,11 +361,11 @@ def gamemain(MIXER) -> int:
         pygame.display.update()
 
         #spelar musik
-        MIXER.RunMusic()
+        if MIXER != 0:
+            MIXER.RunMusic()
         
         #Fps limmit
         game.Clock.tick(60)
-        print(game.deltaTime[1]/1000)
     return 1
 if __name__ == "__main__":
     sys.exit(gamemain())

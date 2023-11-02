@@ -104,9 +104,11 @@ class Designer:
 
     
 
-def Designermain(MIXER) -> int:
+def Designermain(MIXER = 0) -> int:
     pygame.init()
     app = Designer()
+    if MIXER != 0:
+        print("Mixer Recived")
 
     # spel loopen
 
@@ -133,7 +135,8 @@ def Designermain(MIXER) -> int:
         # uppdaterar skärmen
         pygame.display.update()
         #spelar musik
-        MIXER.RunMusic()
+        if MIXER != 0:
+            MIXER.RunMusic()
         # 60 Fps limit
         pygame.time.Clock().tick(60)
     app.lh.objectWriter(app.cubes)
