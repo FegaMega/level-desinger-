@@ -111,7 +111,6 @@ def Designermain(MIXER) -> int:
     # spel loopen
 
     while app.r == True:
-        app.mousePos = app.mousePosUpdate()
         app.deltaTimeUppdate()
         app.u.screen.fill((146, 244, 255)) # Dubbelbuffer (ej visad bild)
         #Updaterar mus positionen
