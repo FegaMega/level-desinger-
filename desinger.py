@@ -40,6 +40,7 @@ class Designer:
         self.moving = False
         self.VisualMisc = []
         self.holding_newCube = False
+        self.FPS = 60
 
     def deltaTimeUppdate(self):
         self.deltaTime[0] = pygame.time.get_ticks() - self.deltaTime[1]
@@ -132,9 +133,10 @@ def Designermain(MIXER) -> int:
         # uppdaterar skärmen
         pygame.display.update()
         #spelar musik
-        MIXER.RunMusic()
+        if MIXER != 0:
+            MIXER.RunMusic()
         # 60 Fps limit
-        pygame.time.Clock().tick(60)
+        pygame.time.Clock().tick(app.FPS)
     app.lh.objectWriter(app.cubes)
     return 1
 

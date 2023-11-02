@@ -105,7 +105,8 @@ def eventROTATEGUN(rANDwKey, gun):
 def eventSHOOTGUN(rANDwMouse, gun):
     Mouse = rANDwMouse(0, "r") 
     MOUSELEFT = Mouse[Mouse.index("MOUSELEFT")+1]
-    if MOUSELEFT[0] == True and MOUSELEFT[2]%10 == 1:
+    if MOUSELEFT[0] == True and MOUSELEFT[2] == True :
+        MOUSELEFT[2] = False
         gun.shoot()
 
 def eventsMOVING(rANDwKey, player):
@@ -128,11 +129,20 @@ def inputHandler(game):
     Mouse = game.u.rANDwMouse(0, "r")
     MouseLeft = Mouse[Mouse.index("MOUSELEFT")+1]
     MouseRight = Mouse[Mouse.index("MOUSERIGHT")+1]
-    
+    if MouseLeft[2] == True:
+        MouseLeft[2] = False
     if MouseLeft[0] == True:
-        MouseLeft[2] += 1
+        if MouseLeft[3][1] == 0:
+            MouseLeft[3][1] = pygame.time.get_ticks()
+            MouseLeft[2] = True
+        MouseLeft[3][0] = (pygame.time.get_ticks() - MouseLeft[3][1])
+        if MouseLeft[3][0]%(330) < (pygame.time.get_ticks() - MouseLeft[3][1]):
+            MouseLeft[2] = True
+            MouseLeft[3][1] = pygame.time.get_ticks()
     else:
+        MouseLeft[3] = [0, 0]
         MouseLeft[2] = 0
+
     if MouseRight[0] == True:
         MouseRight[2] += 1
     else:

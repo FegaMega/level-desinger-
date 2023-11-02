@@ -42,6 +42,7 @@ class Game:
         self.scroll = [0, 0]
         self.FONT = pygame.font.SysFont("Helvetica-bold", 50)
         self.mousePos = [0, 0]
+        self.FPS = 60
     def scrollFunc(self):
         self.scroll[0] += (self.player.pos[0] - self.scroll[0] - self.u.screenSize[0] / 2) / 10
         self.scroll[1] += (self.player.pos[1] - self.scroll[1] - self.u.screenSize[1] / 2) / 10
@@ -133,51 +134,71 @@ class Game:
 
     def vanligaObjektsKollision(self, line, object):
         self.player.in_tunnel = False
-        if line[4] == "right":
-            self.player.pos[0] = object.pos[0] - self.player.size[0]
-            self.player.speed[0] = 0
-        elif line[4] == "left":
-            self.player.pos[0] = object.pos[0] + object.size[0]
-            self.player.speed[0] = 0
+        if line[4] == "up":
+            self.player.pos[1] = object.pos[1] + object.size[1]
+            if self.player.speed[1] < 0:
+                self.player.speed[1] = 0
         elif line[4] == "down":
             self.player.pos[1] = object.pos[1] - self.player.size[1]
             self.player.speed[1] = 0
+            if self.player.speed[1] > 0:
+                self.player.speed[1] = 0
             self.player.on_floor = True
-        elif line[4] == "up":
-            self.player.pos[1] = object.pos[1] + object.size[1]
-            self.player.speed[1] = 0
+        elif line[4] == "right":
+            self.player.pos[0] = object.pos[0] - self.player.size[0]
+            if self.player.speed[0] > 0:
+                self.player.speed[0] = 0
+            if self.player.on_wall_object_left != object:
+                self.player.on_wall = True
+                self.player.on_wall_object = object
+                self.player.on_wall_right = True
+        elif line[4] == "left":
+            self.player.pos[0] = object.pos[0] + object.size[0]
+            if self.player.speed[0] < 0:
+                self.player.speed[0] = 0
+            if self.player.on_wall_object_left != object:
+                self.player.on_wall = True
+                self.player.on_wall_left = True
+                self.player.on_wall_object = object
 
+        return self.player
 
 
     def linjeKollisiomMedObjekt(self, object):
         for line in self.player.collision_lines:
             if self.c.rectCollision(line[0], line[1], line[2], line[3], object.pos[0], object.pos[1], object.size[0], object.size[1]):
                 # vanliga objekt
-                if object.__class__ != tunnel:
-                    self.vanligaObjektsKollision(line, object)
-                else:
+                #if object.__class__ != tunnel:
+                    #self.player = self.vanligaObjektsKollision(line, object)
+                if object.__class__ == tunnel:
                     self.TunnelKollision(line, object)
-                if line[4] == "down":
-                    if self.player.speed[1] > 0:
-                        self.player.speed[1] = 0
-                    self.player.on_floor = True
-                elif line[4] == "up":
-                    if self.player.speed[1] < 0:
-                        self.player.speed[1] = 0
-                elif line[4] == "right":
-                    if self.player.speed[0] > 0:
-                        self.player.speed[0] = 0
-                    if self.player.on_wall_object_left != object:
-                        self.player.on_wall = True
-                        self.player.on_wall_object = object
-                        self.player.on_wall_right = True
-                elif line[4] == "left":
-                    if self.player.speed[0] < 0:
-                        self.player.speed[0] = 0
-                    if self.player.on_wall_object_left != object:
-                        self.player.on_wall = True
-                        self.player.on_wall_left = True
-                        self.player.on_wall_object = object
+                else:
+                    if line[4] == "down":
+                        if self.player.speed[1] > 0:
+                            self.player.pos[1] = object.pos[1] - self.player.size[1]
+                            self.player.speed[1] = 0
+                        self.player.on_floor = True
+                    elif line[4] == "up":
+                        if self.player.speed[1] < 0:
+                            self.player.pos[1] = object.pos[1] + object.size[1]
+                            self.player.speed[1] = 0
+                    elif line[4] == "right":
+                        if self.player.speed[0] > 0:
+                            self.player.pos[0] = object.pos[0] - self.player.size[0]
+                            self.player.speed[0] = 0
+                        if self.player.on_wall_object_left != object:
+                            self.player.on_wall = True
+                            self.player.on_wall_object = object
+                            self.player.on_wall_right = True
+                    elif line[4] == "left":
+                        if self.player.speed[0] < 0:
+                            self.player.pos[0] = object.pos[0] + object.size[0] 
+                            self.player.speed[0] = 0
+                        if self.player.on_wall_object_left != object:
+                            self.player.on_wall = True
+                            self.player.on_wall_left = True
+                            self.player.on_wall_object = object
+        return self.player
 
 
 
@@ -193,7 +214,7 @@ class Game:
             self.player.movement(self.deltaTime[0])
             # kollar om spelaren är under kamerans botten
 #            self.golvCheck()
-            self.player.speed[1] += 0.0004 * self.deltaTime[0]
+            self.player.speed[1] += 0.000009 * self.deltaTime[0]
             # objekt collision loopen
             for object in self.Level:
                 # kollar om det är en portal (de är speciella)
@@ -213,8 +234,8 @@ class Game:
                             # Kollar vilken sida som nuddade objektet med linjer på spelaren
                             self.linjeKollisiomMedObjekt(object)
                 # lägger till ett så att jag vet att jag är i nästa objekt i listan game.Level
-        # resetar mina hopp ifall jag är på marken
-        if self.player.on_wall == True and self.player.on_wall_object != self.player.on_wall_object_left:
+        # återställer mina hopp ifall jag är på marken
+        if self.player.on_wall == True:
             self.player.jumps = 1
         if self.player.on_wall == False and self.player.on_wall_object != 0:
             self.player.on_wall_object_left = self.player.on_wall_object
@@ -280,10 +301,10 @@ class Game:
     
     
     def bulletÅlderCheck(self, Bullet):
-        if Bullet.frames_drawn > 500:
+        if Bullet.Time_drawn > 5000:
             self.player.gun.bullets.remove(Bullet)
             return 1
-        Bullet.frames_drawn += 1
+        Bullet.Time_drawn = pygame.time.get_ticks() - Bullet.Time_created
         return 0
 
 
@@ -360,7 +381,7 @@ def gamemain() -> int:
         pygame.display.update()
         
         #Fps limmit
-        game.Clock.tick(600)
+        game.Clock.tick(game.FPS)
         
     return 1
 if __name__ == "__main__":

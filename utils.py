@@ -54,8 +54,8 @@ class utils:
             "SPACE", [False, pygame.K_SPACE, 0]
         ]
         self.Mouse = [
-            "MOUSELEFT", [False, 1, 0],           
-            "MOUSERIGHT", [False, 3, 0],
+            "MOUSELEFT", [False, 1, 0, [0, 0]],           
+            "MOUSERIGHT", [False, 3, 0, ],
             "MOUSE", [[0, 0], [0, 0]], #[str, pos, oldpos]
             "MOUSESCROLLUP", [False, 4],
             "MOUSESCROLLDOWN", [False, 5]
