@@ -49,7 +49,7 @@ class Player:
             else:
                 self.speed[0] = 0
         if self.mu == True:
-            self.speed[1]= -.04
+            self.speed[1]= -.06
         self.pos[0]+= self.speed[0] * deltaTime
         self.pos[1]+= self.speed[1] * deltaTime
         self.bottom:float = self.pos[1]+ self.size[1]

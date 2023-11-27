@@ -28,7 +28,6 @@ class Game:
         self.deltaTime = [0, pygame.time.get_ticks()/1000]
 #        self.player.gun = pistol.Pistol(self.player.pos[0], self.player.pos[1], 90)
         self.music_lib = ["data/music/Cipher_BGM.flac", "data/music/Aloft_BGM.flac", "data/music/lemmino-nocturnal.flac"]
-        #self.m = mixer(self.music_lib)
         self.user = camera.camera(self.u)
         self.jh = JsonHandler()
         self.sh = settingsfolder.settingshandeler(self.u)
@@ -42,10 +41,10 @@ class Game:
         self.scroll = [0, 0]
         self.FONT = pygame.font.SysFont("Helvetica-bold", 50)
         self.mousePos = [0, 0]
-        self.FPS = 60
+        self.FPS = self.sh.readSetting("FPS")[0]
     def scrollFunc(self):
-        self.scroll[0] += (self.player.pos[0] - self.scroll[0] - self.u.screenSize[0] / 2) / 10
-        self.scroll[1] += (self.player.pos[1] - self.scroll[1] - self.u.screenSize[1] / 2) / 10
+        self.scroll[1] += ((self.player.pos[1] - self.scroll[1] - self.u.screenSize[1] / 2) / 10)/16 * self.deltaTime[0]
+        self.scroll[0] += ((self.player.pos[0] - self.scroll[0] - self.u.screenSize[0] / 2) / 10)/16 * self.deltaTime[0]
 #        if self.scroll[1] > 0:
 #           self.scroll[1] = 0
     def deltaTimeUppdate(self):
@@ -214,7 +213,7 @@ class Game:
             self.player.movement(self.deltaTime[0])
             # kollar om spelaren är under kamerans botten
 #            self.golvCheck()
-            self.player.speed[1] += 0.000009 * self.deltaTime[0]
+            self.player.speed[1] += 0.000025 * self.deltaTime[0]
             # objekt collision loopen
             for object in self.Level:
                 # kollar om det är en portal (de är speciella)
@@ -225,12 +224,12 @@ class Game:
                 # vanliga objekts kod
                 else:
                     # Kollar om spelaren är inuti objektet
-                    if self.c.rectCollision(object.pos[0], object.pos[1], object.size[0], object.size[1], self.player.pos[0], self.player.pos[1], self.player.size[0], self.player.size[1]):
+                    if self.c.rectCollision(object.pos[0], object.pos[1], object.size[0], object.size[1], self.player.pos[0] - 1, self.player.pos[1] - 1, self.player.size[0] + 2, self.player.size[1] + 2):
                         if object.__class__ == extra_jump or object.__class__ == speed:
                             self.collektebleCollekted(object)
                         elif object.__class__ == finish:
                             self.finished(object)
-                        else:
+                        elif object.__class__ == objects.cube:
                             # Kollar vilken sida som nuddade objektet med linjer på spelaren
                             self.linjeKollisiomMedObjekt(object)
                 # lägger till ett så att jag vet att jag är i nästa objekt i listan game.Level
@@ -336,10 +335,9 @@ class Game:
 
     def updateMouse(self):
         self.mousePos = pygame.mouse.get_pos()
-def gamemain() -> int:
+def gamemain(MIXER) -> int:
     pygame.init()
     game = Game()
-
     # spel loopen
 
     while game.r == True:
@@ -377,6 +375,10 @@ def gamemain() -> int:
         # ritat kollision linjerna på spelar(tillfällig)
         game.ritaKollisiolinjer()
         
+        #spelar musik
+        if MIXER != 0:
+            MIXER.RunMusic()
+        
         # uppdaterar skärmen
         pygame.display.update()
         
@@ -385,4 +387,4 @@ def gamemain() -> int:
         
     return 1
 if __name__ == "__main__":
-    sys.exit(gamemain())
+    sys.exit(gamemain(0))

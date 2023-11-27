@@ -18,6 +18,9 @@ class Start:
         self.r = True
         self.mousePos = [0, 0]
         self.MouseLeft = False
+        
+        self.FPS = self.sh.readSetting("FPS")[0]
+        
     def drawButtons(self):
         for i in self.buttons:
             i.draw(self.u.rANDwScreen, self.u.rANDwScreenSize)
@@ -44,7 +47,6 @@ def main() -> int:
                         app.MouseLeft = True
         for button in app.buttons:
             if collision.mouseCollision(app.mousePos[0], app.mousePos[1], button.pos[0], button.pos[1], button.size[0], button.size[1]) == True and app.MouseLeft == True:
-                print(button.type, button.index)
                 return str(button.type)
         # Ritar object
         app.drawButtons()
@@ -54,7 +56,7 @@ def main() -> int:
         pygame.display.update()
 
         # 60 Fps limit
-        pygame.time.Clock().tick(60)
+        pygame.time.Clock().tick(app.FPS)
         app.MouseLeft = False
     return 0
 
@@ -64,7 +66,6 @@ if __name__ == "__main__":
     Mixer = mixer(music_lib)
     while i == True:
         r = main()
-        print (r)
         if r == "game":
             gamemain(Mixer)
         if r == "desinger":
