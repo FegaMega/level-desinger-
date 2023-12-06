@@ -10,5 +10,11 @@ class settingshandeler:
         JH.JsonWriter(self.settingsfolder, self.currentSettingsInfo)
         utils.screenSize = self.currentSettingsInfo["screenSize"]
         utils.newScreen()
-        
+    def changeSetting(self, settingName: str, value):
+        self.currentSettingsInfo = JH.JsonReader(self.settingsfolder)
+        self.currentSettingsInfo[settingName] = value
+        JH.JsonWriter(self.settingsfolder, self.currentSettingsInfo)
+    def readSetting(self, settingName):
+        self.currentSettingsInfo = JH.JsonReader(self.settingsfolder)
+        return self.currentSettingsInfo[settingName]
         

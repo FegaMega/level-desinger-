@@ -40,6 +40,7 @@ class Designer:
         self.moving = False
         self.VisualMisc = []
         self.holding_newCube = False
+        self.FPS = self.sh.readSetting("FPS")[0]
 
     def deltaTimeUppdate(self):
         self.deltaTime[0] = pygame.time.get_ticks() - self.deltaTime[1]
@@ -99,8 +100,8 @@ class Designer:
         self.u.rANDwMouse(mouse, "w")
         return pygame.mouse.get_pos()
     def scrollFunc(self):
-        self.scroll[0] += (self.user.pos[0] + self.user.size[0]/2 - self.scroll[0] - self.u.screenSize[0] / 2) / 10
-        self.scroll[1] += (self.user.pos[1] + self.user.size[0]/2 - self.scroll[1] - self.u.screenSize[1] / 2) / 10
+        self.scroll[0] += (self.user.pos[0] + self.user.size[0]/2 - self.scroll[0] - self.u.screenSize[0] / 2) 
+        self.scroll[1] += (self.user.pos[1] + self.user.size[0]/2 - self.scroll[1] - self.u.screenSize[1] / 2) 
 
     
 
@@ -137,11 +138,11 @@ def Designermain(MIXER = 0) -> int:
         if MIXER != 0:
             MIXER.RunMusic()
         # 60 Fps limit
-        pygame.time.Clock().tick(60)
+        pygame.time.Clock().tick(app.FPS)
     app.lh.objectWriter(app.cubes)
     return 1
 
 
 
 if __name__ == '__main__':
-    sys.exit(Designermain())
+    sys.exit(Designermain(0))

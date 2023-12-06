@@ -7,7 +7,8 @@ class bullet:
         self.speed: float = speed
         self.angle: float = angle
         self.size = [6, 3]
-        self.frames_drawn = 0
+        self.Time_drawn = 0
+        self.Time_created = pygame.time.get_ticks() 
         self.og_surf = pygame.transform.smoothscale(pygame.image.load("data/img/bullet.png").convert_alpha(), (self.size[0], self.size[1]))
         self.surf = pygame.transform.rotate(self.og_surf, self.angle)
         self.rect = pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])

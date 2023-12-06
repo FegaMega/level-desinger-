@@ -34,22 +34,22 @@ class Player:
         self.gun.draw(scrollx, scrolly, screen)
     def movement(self, deltaTime):
         if self.ml:
-            self.speed[0] -= (self.max_speed/20)
+            self.speed[0] -= (self.max_speed/50)
             if self.speed[0] < -self.max_speed:
                 self.speed[0] = -self.max_speed
         if self.mr:
-            self.speed[0] += (self.max_speed/20)
+            self.speed[0] += (self.max_speed/50)
             if self.speed[0] > self.max_speed:
                 self.speed[0] = self.max_speed
         if self.mr == self.ml:
-            if self.speed[0] > 0.0005:
+            if self.speed[0] > 0.0001:
                 self.speed[0] -= (self.speed[0] / 20)
-            elif self.speed[0] < -0.0005:
+            elif self.speed[0] < -0.0001:
                 self.speed[0] -= (self.speed[0] / 20)
             else:
                 self.speed[0] = 0
         if self.mu == True:
-            self.speed[1]= -.07
+            self.speed[1]= -.06
         self.pos[0]+= self.speed[0] * deltaTime
         self.pos[1]+= self.speed[1] * deltaTime
         self.bottom:float = self.pos[1]+ self.size[1]
