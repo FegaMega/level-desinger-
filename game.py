@@ -25,10 +25,8 @@ class Game:
         self.r = True
         self.u = utils.utils()
         self.Clock = pygame.time.Clock()
-        self.deltaTime = [0, pygame.time.get_ticks()/1000]
-#        self.player.gun = pistol.Pistol(self.player.pos[0], self.player.pos[1], 90)
+        self.deltaTime = [0, pygame.time.get_ticks()]
         self.music_lib = ["data/music/Cipher_BGM.flac", "data/music/Aloft_BGM.flac", "data/music/lemmino-nocturnal.flac"]
-        self.user = camera.camera(self.u)
         self.jh = JsonHandler()
         self.sh = settingsfolder.settingshandeler(self.u)
         self.iC = inputControlerGame
@@ -37,6 +35,7 @@ class Game:
         self.lh.objectReader(self.Level)
         self.start = self.find_start()
         self.player = player.Player(self.start.pos[0], self.start.pos[1])
+        self.user = camera.camera(self.u, self.player.pos)
         self.c = collision
         self.scroll = [0, 0]
         self.FONT = pygame.font.SysFont("Helvetica-bold", 50)
@@ -75,8 +74,8 @@ class Game:
             self.player.on_floor = True
         else:
             # Gravitation
-            # säger att spelaren inte är på golvet
             self.player.speed[1] += 20 / 60
+            # säger att spelaren inte är på golvet
             self.player.on_floor = False
 
             
