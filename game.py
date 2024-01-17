@@ -25,7 +25,7 @@ class Game:
         self.r = True
         self.u = utils.utils()
         self.Clock = pygame.time.Clock()
-        self.deltaTime = [0, pygame.time.get_ticks()/1000]
+        self.deltaTime = [0, 0]
 #        self.player.gun = pistol.Pistol(self.player.pos[0], self.player.pos[1], 90)
         self.music_lib = ["data/music/Cipher_BGM.flac", "data/music/Aloft_BGM.flac", "data/music/lemmino-nocturnal.flac"]
         self.user = camera.camera(self.u)
@@ -390,7 +390,6 @@ def gamemain(MIXER = 0) -> int:
         
         #Fps limmit
         game.Clock.tick(game.FPS)
-        
     return 1
 if __name__ == "__main__":
     sys.exit(gamemain(0))

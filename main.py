@@ -66,9 +66,12 @@ if __name__ == "__main__":
     Mixer = mixer(music_lib)
     while i == True:
         r = main()
+        pygame.quit()
         if r == "game":
             gamemain(Mixer)
+            pygame.quit()
         if r == "desinger":
             Designermain(Mixer)
+            pygame.quit()
         if r == 0:
             sys.exit() 
