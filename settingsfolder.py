@@ -1,5 +1,4 @@
-import  JH, utils, pygame, json
-from utils import utils
+import  JH
 JH = JH.JsonHandler()
 
 class settingshandeler:

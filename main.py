@@ -69,9 +69,7 @@ if __name__ == "__main__":
         pygame.quit()
         if r == "game":
             gamemain(Mixer)
-            pygame.quit()
-        if r == "desinger":
+        elif r == "desinger":
             Designermain(Mixer)
-            pygame.quit()
-        if r == 0:
+        elif r == 0:
             sys.exit() 

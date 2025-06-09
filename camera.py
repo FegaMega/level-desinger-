@@ -1,9 +1,12 @@
 import pygame
 
 class camera:
-    def __init__(self, Utils):
+    def __init__(self, Utils, pos = [0]):
         self.U = Utils
-        self.pos = [self.U.screenSize[0]/2, self.U.screenSize[1]/2]
+        if pos == [0]:
+            self.pos = [self.U.screenSize[0]/2, self.U.screenSize[1]/2]
+        else:
+            self.pos = pos
         self.size = [0, 0]
         self.speed = [0.0, 0.0]
         self.rect = pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])

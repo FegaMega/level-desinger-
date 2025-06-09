@@ -22,6 +22,7 @@ def ArrayOfStrToInt(str):
 
 class Designer:
     def __init__(self):
+        pygame.init()
         self.u = utils.utils()
         self.user = camera.camera(self.u)
         self.jh = JsonHandler()
